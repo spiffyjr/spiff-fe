@@ -1,0 +1,128 @@
+body {
+    font-size: 13px;
+    font-family: "Lucida Console", Monaco, monospace;
+    background-color: #000;
+    color: #ccc;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#status {
+    margin-bottom: 10px;
+}
+
+#status span span {
+    position: relative;
+    left: -105px;
+    font-weight: bold;
+    font-size: 12px;
+    text-shadow: 0 0 4px #000;
+    vertical-align: middle;
+}
+
+#status progress {
+    width: 100px;
+    height: 15px;
+    background-color: #0c0c0c;
+}
+
+#status progress::-webkit-progress-bar {
+    background-color: #5c5c5c;
+    border-radius: 4px;
+}
+
+#status progress::-webkit-progress-value {
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+}
+
+#status .stamina span {
+    color: black;
+    text-shadow: 0 0 4px #fff;
+}
+
+#status .health progress::-webkit-progress-value {
+    background: darkred;
+}
+
+#status .mana progress::-webkit-progress-value {
+    background: darkblue;
+}
+
+#status .stamina progress::-webkit-progress-value {
+    background: yellow;
+}
+
+#status .spirit progress::-webkit-progress-value {
+    background: purple;
+}
+
+#thoughts {
+    height: 20%;
+    margin-bottom: 10px;
+}
+
+#game {
+    flex: 1;
+    margin-bottom: 10px;
+}
+
+.buffer {
+    padding: 6px 12px;
+    border: 1px solid #5e5e5e;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    background-color: #0c0c0c;
+}
+
+#command-container {
+    margin: 0;
+    position: relative;
+}
+
+#command-container progress {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 34px;
+    border-radius: 4px;
+}
+
+#command-container progress::-webkit-progress-value {
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+}
+
+#command-container progress.hardrt::-webkit-progress-value {
+    background: darkred;
+}
+
+#command-container progress.softrt::-webkit-progress-value {
+    background: darkblue;
+}
+
+#command-container progress.stun::-webkit-progress-value {
+    background: yellow;
+}
+
+#command {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    background-color: #0c0c0c;
+    border: 1px solid #5e5e5e;
+    color: #ccc;
+    opacity: 0.8;
+}
+
+#command:focus {
+    border: 1px solid #5e5e5e;
+}

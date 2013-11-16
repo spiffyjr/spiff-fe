@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app" ng-csp>
+<head>
+    <meta charset="utf-8">
+    <title>Spiff FE</title>
+
+    <link rel="stylesheet" media="all" href="../vendor/css/bootstrap.min.css">
+    <link rel="stylesheet" media="all" href="../vendor/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" media="all" href="../vendor/css/font-awesome.min.css">
+    <link rel="stylesheet" media="all" href="../asset/css/main.css">
+    <link rel="stylesheet" media="all" href="../asset/css/theme.css">
+    <link rel="stylesheet" media="all" href="../asset/css/highlights.css">
+</head>
+
+<body>
+
+<div class="wrapper" ng-controller="GameCtrl">
+    <div id="thoughts" class="buffer" ng-bind-html="buffers.thoughts.join('');"></div>
+    <div id="game" class="buffer" ng-bind-html="buffers.game.join('');"></div>
+    <footer id="footer">
+        <div id="status" ng-controller="StatusCtrl">
+            <span class="health">
+                <progress value="{{ status.health.current }}" max="{{ status.health.max }}"></progress>
+                <span><i class="fa fa-heart"></i> {{ status.health.current }}</span>
+            </span>
+            <span class="mana">
+                <progress value="{{ status.mana.current }}" max="{{ status.mana.max }}"></progress>
+                <span><i class="fa fa-bolt"></i> {{ status.mana.current }}</span>
+            </span>
+            <span class="stamina">
+                <progress value="{{ status.stamina.current }}" max="{{ status.stamina.max }}"></progress>
+                <span><i class="fa fa-beer"></i> {{ status.stamina.current }}</span>
+            </span>
+            <span class="spirit">
+                <progress value="{{ status.spirit.current }}" max="{{ status.spirit.max }}"></progress>
+                <span><i class="fa fa-bullhorn"></i> {{ status.spirit.current }}</span>
+            </span>
+            <span class="pbarStance"><i class="fa fa-shield fa-lg"></i> {{ status.pbarStance.current }}</span>
+            <span class="encumlevel"><i class="fa fa-anchor fa-lg"></i> {{ status.encumlevel.current }}</span>
+            <span class="mindState"><i class="fa fa-lightbulb-o fa-lg"></i> {{ status.mindState.current }}</span>
+        </div>
+        <div id="command-container" style="clear: both;">
+            <span ng-controller="CounterCtrl">
+                <progress value="0" max="1000" fe-progress="roundtime" fe-progress-type="type"></progress>
+            </span>
+            <input id="command" class="form-control" ng-model="command" type="text"
+               autofocus="autofocus" placeholder="command" ng-controller="CommandCtrl"
+               ui-keydown="{'down':'down($event)', 'up':'up($event)', 'alt-enter':'enter($event)', 'ctrl-enter':'enter($event)', 'enter':'enter($event)'}">
+        </div>
+    </footer>
+</div>
+
+<script src="../vendor/js/angular.min.js"></script>
+<script src="../vendor/js/angular-route.min.js"></script>
+<script src="../vendor/js/angular-sanitize.min.js"></script>
+<script src="../vendor/js/angular-ui-keypress.js"></script>
+<script src="../vendor/js/replace.js"></script>
+
+<script src="../common/directive/progress.js"></script>
+
+<script src="client/socket.js"></script>
+<script src="client/client.js"></script>
+<script src="command/command.js"></script>
+<script src="counter/counter.js"></script>
+<script src="game/game.js"></script>
+<script src="status/status.js"></script>
+
+<script src="app.js"></script>
+
+</body>
+</html>
