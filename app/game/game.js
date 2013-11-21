@@ -22,7 +22,7 @@ angular.module('game', ['client', 'client.parser'])
             }
 
             // Remove end of lines because they're handled by div's.
-            text = text.replace(/^[\r\n]/gm, '').replace(/[\r\n]$/gm, '');
+            //text = text.replace(/^[\r\n]/gm, '').replace(/[\r\n]$/gm, '');
 
             $scope[stream].push(text);
             $scope[stream] = $scope[stream].splice(-100);

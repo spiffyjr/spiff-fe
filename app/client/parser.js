@@ -41,6 +41,14 @@ angular.module('client.parser', [])
             this.parse = function(str) {
                 var matches;
 
+                /*
+                 [LNet]-GSIV:Tillmen: "Oh.. if the line starts out empty with just a line return, you use it."
+                 [LNet]-GSIV:Tillmen: "If they line isn't empty to start with, but is after you strip the XML, you ignore it."
+                 [LNet]-GSIV:Tillmen: "Fixed!"
+                 */
+
+
+
                 //console.log(str);
                 while (str.length > 0) {
                     matches = xmlRegex.exec(str);
@@ -84,6 +92,10 @@ angular.module('client.parser', [])
                         } else if (xml.match(/^<(?:dialogdata|d|\/d|\/?component|label|skin|output)/)) {
                         } else {
                             //console.log('unhandled xmlTag: ' + xml);
+                        }
+
+                        if (str.trim().length == 0) {
+                            break;
                         }
                     } else {
                         var text = matches ? str.slice(0, matches.index) : str;
