@@ -67,9 +67,9 @@ angular.module('client.parser', [])
                             //this.onStyleStart('link');
                         } else if (xml == '</a>') {
                             //this.onStyleEnd();
-                        } else if (matches = xml.match(/^<(?:pushStream|component|compDef) id=("|')(.*?)\1[^>]*\/?>$/)) {
+                        } else if (matches = xml.match(/^<(?:pushStream|component) id=("|')(.*?)\1[^>]*\/?>$/)) {
                             this.onStreamStart(matches[2]);
-                        } else if (xml.match(/^<popStream/) || xml == '</component>' || xml == '</compDef>') {
+                        } else if (xml.match(/^<popStream/) || xml == '</component>') {
                             this.onStreamEnd();
                         } else if (matches = xml.match(/^<roundTime value=('|")([0-9]+)\1/)) {
                             this.onRoundTime('hard', serverTimeToMs(matches[2]));
