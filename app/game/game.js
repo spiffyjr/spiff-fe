@@ -1,35 +1,31 @@
 'use strict';
 
-angular.module('game', ['client'])
-    .controller('GameCtrl', function($scope, Client) {
-        $scope.buffers = {
-            thoughts: [],
-            logons: [],
-            game: []
+angular.module('game', ['client', 'client.parser'])
+    .config(function ($routeProvider) {
+        $routeProvider.when('/game', { controller: 'GameCtrl', templateUrl: 'game/game.html' });
+    })
+    .controller('GameCtrl', function($scope, Client, Parser) {
+        $scope.thoughts = [];
+        $scope.logons   = [];
+        $scope.game     = [];
+
+        Parser.onLaunchUrl = function(url) {
+            window.open('http://www.play.net/' + url);
         };
 
-        window.document.onkeydown = function(event) {
-            if (event.which == 81 && event.altKey) {
-                Client.send('stance offensive');
-            } else if (event.which == 82 && event.altKey) {
-                Client.send('stance defensive');
-            }
-            console.log(event);
-        };
-
-        Client.on('buffer', function(buffer, stream) {
+        Client.onText = function(text, stream) {
             if (!stream) {
-                stream = 'game'
-            } else if (!$scope.buffers[stream]) {
-                stream = null;
+                stream = 'game';
+            }
+            if (undefined === $scope[stream]) {
+                return;
             }
 
-            if (stream) {
-                $scope.buffers[stream] = buffer.slice(-50);
-                $scope.$$phase || $scope.$apply();
+            // Remove end of lines because they're handled by div's.
+            text = text.replace(/^[\r\n]/gm, '').replace(/[\r\n]$/gm, '');
 
-                var ele = angular.element(document.getElementById(stream));
-                ele.prop('scrollTop', ele.prop('scrollHeight'));
-            }
-        });
+            $scope[stream].push(text);
+            $scope[stream] = $scope[stream].splice(-100);
+            $scope.$$phase || $scope.$apply();
+        };
     });

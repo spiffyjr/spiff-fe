@@ -1,43 +1,44 @@
 'use strict';
 
-angular.module('client', ['client.socket'])
-    .factory('Client', function(Socket) {
-        var Client = function Client(socket) {
-            var callbacks = {
-                hardrt: null,
-                softrt: null,
-                status: null,
-                stream: null,
-                text: null
+angular.module('client', ['client.parser', 'client.socket', 'settings'])
+    .factory('Client', function(Parser, Socket, SettingsService) {
+        var Client = function Client(Parser, socket) {
+            this.settings = {
+                css: null,
+                highlights: null,
+                presets: null,
+                macros: null
             };
 
-            var stream, needPrompt = false, style = {};
+            var activeStream = null;
 
-            var styleMatches = [];
+            var activeStyle = null;
 
-            var textHighlights = [];
+            var promptText = '&gt;';
 
-            var buffers = {
-                game: [],
-                logons: [],
-                thoughts: []
-            };
+            var needPrompt = false;
 
-            var escapeEntities = function(str) {
-                return str
-                    .replace('<', '&lt;')
-                    .replace('>', '&gt;');
+            var activeText = '';
+
+            var onGameData = function(str) {
+                Parser.parse(str);
             };
 
             var applyHighlight = function(str, hl) {
-                var tmp = angular.element('<span>').html(str);
+                var css = this.settings.css[hl.css];
+                if (!css) {
+                    return str;
+                }
+
+                var tmp  = angular.element('<span>').html(str);
+                var find = hl.regex ? new RegExp(hl.regex) : hl.string;
 
                 findAndReplaceDOMText(tmp[0], {
-                    find: hl.regex,
+                    find: find,
                     replace: function(portion) {
                         var span = angular
                             .element('<span>')
-                            .attr('class', hl.css)
+                            .css(css)
                             .html(portion.text);
 
                         return span[0];
@@ -45,214 +46,125 @@ angular.module('client', ['client.socket'])
                 });
 
                 return tmp.html();
-            };
+            }.bind(this);
 
-            var parseHighlights = function(str) {
-                for (var i = 0; i < textHighlights.length; i++) {
-                    str = applyHighlight(str, textHighlights[i]);
-                }
+            var applyHighlights = function(str) {
+                angular.forEach(this.settings.highlights, function(hl) {
+                    str = applyHighlight(str, hl);
+                });
                 return str;
-            };
+            }.bind(this);
 
-            var addPrompt = function(cmd) {
-                if (!cmd) {
-                    cmd = '';
+            var sendPrompt = function(text, cmd) {
+                if (activeStream) {
+                    return;
                 }
-                buffers.game.push('<span class="prompt">&gt;' + cmd + '</span>');
                 if (cmd) {
-                    buffers.game.push("\n");
+                    text = text + cmd;
                 }
-                callbacks.buffer(buffers.game, stream);
+
+                if (this.settings.presets.prompt) {
+                    text = applyHighlight(text, {
+                        regex: '.*',
+                        css: this.settings.presets.prompt
+                    });
+                }
+
+                this.onText(text + "\n", null);
+            }.bind(this);
+
+            var addText = function(text) {
+                activeText = activeText + text;
             };
 
-            var handleGameText = function(text) {
-                text = escapeEntities(text);
-
-                if (style) {
-                    style.end = text.length;
-                    styleMatches.push({
-                        regex: text.substr(style.start, style.end - style.start),
-                        css: style.css
-                    });
-                    style = null;
-                }
-
+            var handleText = function(text) {
                 if (text.match(/^\[.*?\]>/)) {
                     needPrompt = false;
                 }
 
-                if (text.trim().length > 0) {
-                    text = parseHighlights(text);
+                text = applyHighlights(text);
 
-                    // parse styles
-                    var styleMatch;
-                    while (styleMatch = styleMatches.pop()) {
-                        if (styleMatch.regex && styleMatch.css) {
-                            text = applyHighlight(text, styleMatch);
-                        }
-                    }
-
-                    if (stream) {
-                        var matches;
-                        if (stream == 'thoughts') {
-                            if (text.match(/^\[.+?\]\-[A-z]+\:[A-Z][a-z]+\: "|^\[server\]\: /)) {
-                                //stream = 'lnet'
-                            }
-                        }
-                        if (buffers[stream]) {
-                            if (stream == 'death' || stream == 'logons') {
-                                if (matches = text.match(/(\w+) (?:just bit the dust|has been vaporized|was just incinerated)/)) {
-                                    text = '<span class="logons death">' + matches[1] + " died</span>\n";
-                                } else if (matches = text.match(/(\w+) (joins the adventure|returns home from a hard day of adventuring|has disconnected)/)) {
-                                    var css;
-                                    if (matches[2] == 'joins the adventure') {
-                                        css = 'join';
-                                    } else {
-                                        css = 'leave';
-                                    }
-
-                                    text = '<span class="logons ' + css + '">' + matches[1] + "</span>\n";
-                                }
-                            }
-                            if (!text.match(/^\[server\]: "(?:kill|connect)/)) {
-                                buffers[stream].push(text);
-                                callbacks.buffer(buffers[stream], stream);
-                            }
-                        }
-                    } else {
-                        if (needPrompt) {
-                            needPrompt = false;
-                            addPrompt();
-                        }
-
-                        buffers.game.push(text);
-                        callbacks.buffer(buffers.game, stream);
-                    }
+                if (activeStyle && this.settings.presets[activeStyle]) {
+                    text = applyHighlight(text, {
+                        string: text,
+                        css: this.settings.presets[activeStyle]
+                    });
                 }
-            };
 
-            var parseGameLine = function(line) {
-                var matches, xml, start;
-
-                line = line.replace(/(?:\r\n|\r|\n)+$/, "\n");
-                while (matches = line.match(/(<(prompt|spell|right|left|inv|compass).*?\2>|<.*?>)/)) {
-                    xml   = matches[1];
-                    start = matches.index;
-                    line  = line.substr(0, start) + line.substr(start + xml.length);
-
-                    if (matches = xml.match(/^<prompt time=('|")([0-9]+)\1.*?>(.*?)&gt;<\/prompt>$/)) {
-                        needPrompt = true;
-                    } else if (matches = xml.match(/^<progressBar id='(.*?)' value='[0-9]+' text='\1 (\-?[0-9]+)\/([0-9]+)'/)) {
-                        if (callbacks.status) {
-                            callbacks.status(matches[1], matches[2], matches[3])
-                        }
-                    } else if (matches = xml.match(/^<progressBar id='encumlevel' value='([0-9]+)' text='(.*?)'/)) {
-                        if (callbacks.status) {
-                            if (matches[2] == 'Overloaded') {
-                                matches[1] = 110;
-                            }
-                            callbacks.status('encumlevel', matches[1], 110);
-                        }
-                    } else if (matches = xml.match(/^<progressBar id='pbarStance' value='([0-9]+)'/)) {
-                        if (callbacks.status) {
-                            callbacks.status('pbarStance', matches[1], 100);
-                        }
-                    } else if (matches = xml.match(/^<progressBar id='mindState' value='(.*?)' text='(.*?)'/)) {
-                        if (callbacks.status) {
-                            if (matches[2] == 'saturated') {
-                                matches[1] = 110;
-                            }
-                            callbacks.status('mindState', matches[1], 110);
-                        }
-                    } else if (matches = xml.match(/^<roundTime value=('|")([0-9]+)\1/)) {
-                        if (callbacks.hardrt) {
-                            callbacks.hardrt(matches[2] - Math.round(+new Date() / 1000));
-                        }
-                    } else if (matches = xml.match(/^<castTime value=('|")([0-9]+)\1/)) {
-                        if (callbacks.softrt) {
-                            callbacks.softrt(matches[2] - Math.round(+new Date() / 1000));
-                        }
-                    } else if (matches = xml.match(/^<style id=("|')(.*?)\1/)) {
-                        if (matches[2]) {
-                            style = {
-                                start: start,
-                                css: matches[2]
-                            };
-                        } else {
-                            if (style) {
-                                style.end = start;
-                                styleMatches.push({
-                                    regex: line.substr(style.start, style.end - style.start),
-                                    css: style.css
-                                });
-                                style = null;
-                            }
-                        }
-                    } else if (matches = xml.match(/^<a exist="(-?\d+)" noun="\w+"(?: coords="\d+,\d+")?>/)) {
-                        var css = 'highlight';
-                        if (matches[1] && matches[1][0] == '-') {
-                            css = 'person';
-                        }
-                        style = {
-                            start: start,
-                            css: css
-                        };
-                    } else if (xml.match(/^<\/a>/)) {
-                        if (style) {
-                            style.end = start;
-                            styleMatches.push({
-                                regex: line.substr(style.start, style.end - style.start),
-                                css: style.css
-                            });
-                            style = null;
-                        }
-                    } else if (matches = xml.match(/^<(?:pushStream|component) id=("|')(.*?)\1[^>]*\/?>$/)) {
-                        stream = matches[2];
-                        handleGameText(line.slice(0, start));
-                        line   = line.substr(start);
-                    } else if (xml.match(/^<popStream/) || xml == '</component>') {
-                        handleGameText(line.slice(0, start));
-                        line   = line.substr(start);
-                        stream = null;
-                    } else if (xml.match(/^<compDef/)) {
-                        ;
-                    } else if (xml.match(/^<streamWindow/)) {
-                        return;
-                    }
+                addText(text);
+                if (needPrompt) {
+                    needPrompt = false;
+                    sendPrompt(promptText);
                 }
-                handleGameText(line);
+            }.bind(this);
+
+            this.connect = function(hostname, port, callback) {
+                socket.connect(hostname, port, callback);
             };
 
-            this.addHighlight = function(regex, css) {
-                textHighlights.push({
-                    regex: regex,
-                    css: css
-                });
-            };
-
-            this.on = function(event, callback) {
-                callbacks[event] = callback;
+            this.disconnect = function() {
+                socket.disconnect();
             };
 
             this.send = function(str) {
-                if (str.length == 0) {
+                if (str.trim().length == 0) {
                     return;
                 }
                 needPrompt = false;
-                addPrompt(str);
+                sendPrompt(promptText, str);
                 socket.write(str);
             };
 
-            socket.ondata(parseGameLine);
-            socket.connect();
+            this.onText = function(text, stream) {
+                console.log('stream: ' + stream);
+                console.log('text: ' + text);
+            };
+
+            Parser.onPrompt = function(timestamp, status) {
+                var newPromptText = status + "&gt;";
+
+                if (promptText != newPromptText) {
+                    needPrompt = false;
+                    promptText = newPromptText;
+                    sendPrompt(promptText);
+                } else {
+                    needPrompt = true;
+                }
+            };
+
+            Parser.onParseComplete = function() {
+                this.onText(activeText, activeStream);
+                activeText   = '';
+            }.bind(this);
+
+            Parser.onStyleStart = function(style) {
+                activeStyle = style;
+            };
+
+            Parser.onStyleEnd = function() {
+                activeStyle = null;
+            };
+
+            Parser.onStreamStart = function(stream) {
+                activeStream = stream;
+            }.bind(this);
+
+            Parser.onStreamEnd = function() {
+                this.onText(activeText, activeStream);
+                activeText = '';
+                activeStream = null;
+            }.bind(this);
+
+            Parser.onText = handleText;
+
+            socket.ondata(onGameData);
         };
 
-        var client = new Client(Socket);
+        var client = new Client(Parser, Socket);
 
-        client.addHighlight(/\([0-9][0-9]:[0-9][0-9]:[0-9][0-9]\)$/, 'numbers');
-        client.addHighlight(/^\[LNet\]/, 'lnet');
-        client.addHighlight(/Obvious (?:exits|paths):/, 'paths');
-        client.addHighlight(/^\[Private(?:To)?\]/, 'private');
+        SettingsService.load(function(settings) {
+            client.settings = settings;
+        });
 
         return client;
     });

@@ -1,0 +1,23 @@
+<div class="page-header">
+    <h1>Settings</h1>
+</div>
+<p>
+    For now there is no settings interface. You need to copy/paste the text from below into an editor, modify the
+    settings you need to, and then press save. Make sure the JSON is valid or bad things might happen.
+</p>
+<p>
+    Alternatively, click the default button to return to defaults.
+</p>
+<p>
+    In the future this will have an actual interface.
+</p>
+<form role="form">
+    <div class="form-group">
+        <textarea class="form-control" rows="8" ng-model="settings"></textarea>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
+        <button type="button" class="btn btn-default" ng-click="defaults();">Defaults</button>
+        <a href="#/game" class="btn btn-default">Cancel</a>
+    </div>
+</form>

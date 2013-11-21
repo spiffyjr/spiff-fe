@@ -2,7 +2,7 @@
 
 angular.module('client.socket', [])
     .factory('Socket', function() {
-        var Socket = function Socket(hostname, port) {
+        var Socket = function Socket() {
             var socketId;
             var cbOnData;
 
@@ -45,19 +45,24 @@ angular.module('client.socket', [])
                 cbOnData = callback;
             };
 
-            this.connect = function(callback) {
+            this.connect = function(hostname, port, callback) {
                 if (socketId) {
                     return;
                 }
 
                 chrome.socket.create('tcp', function(socketInfo) {
                     socketId = socketInfo.socketId;
-                    chrome.socket.connect(socketId, hostname, port, function() {
+                    chrome.socket.connect(socketId, hostname, port, function(result) {
+                        if (result < 0) {
+                            socketId = null;
+                        }
                         if (callback) {
-                            callback();
+                            callback(result);
                         }
 
-                        read();
+                        if (socketId) {
+                            read();
+                        }
                     });
                 });
             };
@@ -77,5 +82,5 @@ angular.module('client.socket', [])
             };
         };
 
-        return new Socket('127.0.0.1', 8000);
+        return new Socket();
     });

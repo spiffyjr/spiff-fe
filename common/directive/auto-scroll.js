@@ -1,19 +1,28 @@
 'use strict';
 
-angular.module('directive.autoScroll', [])
-    .directive('autoScroll', function() {
+angular.module('directive.autoscroll', [])
+    .directive('feAutoScroll', function() {
+        var disable = false;
+
         return {
-            scope: { autoScroll: '=' },
-            template: '<div ng-repeat="line in autoScroll track by $index" ng-bind-html="line"></div>',
+            scope: { feAutoScroll: '=' },
             link: function(scope, element) {
-                var height = element.prop('scrollHeight');
-                scope.$watch(height, function(value) {
-                    console.log(element.prop('scrollHeight'));
-                    if (!value) {
+                element[0].onmousewheel = function(event) {
+                    if (event.wheelDelta < 0) {
+                        if ((element.prop('scrollTop') + element.prop('clientHeight') + element.prop('clientTop')) == element.prop('scrollHeight')) {
+                            //disable = false;
+                        }
+                    } else {
+                        //disable = true;
+                    }
+                };
+
+                scope.$watch(function() { return element.prop('scrollHeight') }, function(value) {
+                    if (disable) {
                         return;
                     }
 
-                    element.prop('scrollTop', element.prop('scrollHeight'));
+                    element.prop('scrollTop', value);
                 });
             }
         };

@@ -1,0 +1,21 @@
+<div id="status" ng-controller="StatusCtrl">
+    <span class="health">
+        <progress value="{{ status.health.current }}" max="{{ status.health.max }}"></progress>
+        <span><i class="fa fa-heart"></i> {{ status.health.current }}</span>
+    </span>
+    <span class="mana">
+        <progress value="{{ status.mana.current }}" max="{{ status.mana.max }}"></progress>
+        <span><i class="fa fa-bolt"></i> {{ status.mana.current }}</span>
+    </span>
+    <span class="stamina">
+        <progress value="{{ status.stamina.current }}" max="{{ status.stamina.max }}"></progress>
+        <span><i class="fa fa-beer"></i> {{ status.stamina.current }}</span>
+    </span>
+    <span class="spirit">
+        <progress value="{{ status.spirit.current }}" max="{{ status.spirit.max }}"></progress>
+        <span><i class="fa fa-bullhorn"></i> {{ status.spirit.current }}</span>
+    </span>
+    <span class="pbarStance"><i class="fa fa-shield fa-lg"></i> {{ status.pbarStance.current }}%</span>
+    <span class="encumlevel"><i class="fa fa-anchor fa-lg"></i> {{ status.encumlevel.current }}%</span>
+    <span class="mindState"><i class="fa fa-lightbulb-o fa-lg"></i> {{ status.mindState.current }}%</span>
+</div>

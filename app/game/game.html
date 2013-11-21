@@ -1,0 +1,19 @@
+<div class="flex">
+    <div class="flex-column main-window">
+        <div id="thoughts" fe-auto-scroll class="buffer">
+            <div class="game-content" ng-repeat="line in thoughts track by $index" ng-bind-html="line"></div>
+        </div>
+        <div id="game" fe-auto-scroll class="buffer">
+            <div class="game-content" ng-repeat="line in game track by $index" ng-bind-html="line"></div>
+        </div>
+        <footer id="footer">
+            <div ng-include="'status/status.html'"></div>
+            <div ng-include="'command/command.html'"></div>
+        </footer>
+    </div>
+    <div class="side-window flex-column col-lg-2 col-xs-3">
+        <div id="logons" fe-auto-scroll class="buffer" ng-bind-html="logons"></div>
+        <div id="charinfo" class="buffer">character info here</div>
+        <div id="settings"><a href="#/settings"><i class="fa fa-2x fa-cogs"></i></a></div>
+    </div>
+</div>

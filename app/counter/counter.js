@@ -1,35 +1,37 @@
 'use strict';
 
-angular.module('counter', ['client'])
-    .controller('CounterCtrl', function($scope, $timeout, Client) {
-        $scope.roundtime = 0;
-        $scope.type      = 'hardrt';
+angular.module('counter', ['client', 'client.parser'])
+    .controller('CounterCtrl', function($scope, Parser) {
+        var roundtimes = { hard: 0, soft: 0, stun: 0 };
 
-        var handleRoundtime = function(value, type) {
-            if ($scope.roundtime > 0) {
+        $scope.max        = 1000;
+        $scope.roundtime  = 0;
+        $scope.type       = 'hard';
+
+        var counterInterval;
+        var updateTime = 250;
+
+        Parser.onRoundTime = function(type, value) {
+            if (value < 0) {
                 return;
             }
-            value = value * 10;
-            var scale = (1000 / value);
+
+            clearInterval(counterInterval);
+
+            var scale = ($scope.max / value);
+
             $scope.type      = type;
             $scope.roundtime = scale * value;
 
-            var counter = setInterval(function() {
-                value--;
+            counterInterval = setInterval(function() {
+                value = value - updateTime;
                 $scope.roundtime = value * scale;
                 $scope.$apply();
 
-                if (value == 0) {
-                    clearInterval(counter);
+                if (value < 0) {
+                    clearInterval(counterInterval);
+                    counterInterval = null;
                 }
-            }, 100);
-        };
-
-        Client.on('hardrt', function(value) {
-            handleRoundtime(value, 'hardrt');
-        });
-
-        Client.on('softrt', function(value) {
-            handleRoundtime(value, 'softrt');
-        });
+            }, updateTime);
+        }
     });
