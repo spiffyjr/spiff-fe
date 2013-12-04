@@ -73,30 +73,50 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 this.onText(text + "\n", null);
             }.bind(this);
 
-            var addText = function(text) {
-                activeText = activeText + text;
-            };
+            this.sendText = function() {
+                if (activeText == '') {
+                    return;
+                }
 
-            var handleText = function(text) {
-                if (text.match(/^\[.*?\]>/)) {
+                if (/^\[.*?\]>/.test(activeText)) {
                     needPrompt = false;
                 }
 
-                text = applyHighlights(text);
-
-                if (activeStyle && this.settings.presets[activeStyle]) {
-                    text = applyHighlight(text, {
-                        string: text,
-                        css: this.settings.presets[activeStyle]
-                    });
+                if (activeStream) {
+                    var matches;
+                    if (matches = activeText.match(/(\w+) joins the adventure/)) {
+                        activeText = applyHighlight(matches[1], {
+                            string: matches[1],
+                            css: this.settings.presets.logons
+                        });
+                    } else if (matches = activeText.match(/(\w+) returns home from a hard day of adventuring/)) {
+                        activeText = applyHighlight(matches[1], {
+                            string: matches[1],
+                            css: this.settings.presets.logoffs
+                        });
+                    } else if (matches = activeText.match(/(\w+) has disconnected/)) {
+                        activeText = applyHighlight(matches[1], {
+                            string: matches[1],
+                            css: this.settings.presets.disconnects
+                        });
+                    } else if (matches = activeText.match(/(\w+) (?:just bit the dust|has been vaporized|was just incinerated)/)) {
+                        activeText = applyHighlight(matches[1], {
+                            string: matches[1],
+                            css: this.settings.presets.deaths
+                        });
+                    }
                 }
 
-                addText(text);
+                activeText = applyHighlights(activeText);
+
+                this.onText(activeText, activeStream);
                 if (needPrompt) {
                     needPrompt = false;
                     sendPrompt(promptText);
                 }
-            }.bind(this);
+
+                activeText = '';
+            };
 
             this.connect = function(hostname, port, callback) {
                 socket.connect(hostname, port, callback);
@@ -133,11 +153,13 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
             };
 
             Parser.onParseComplete = function() {
-                this.onText(activeText, activeStream);
-                activeText   = '';
+                this.sendText();
             }.bind(this);
 
             Parser.onStyleStart = function(style) {
+                if (activeStream == 'logons') {
+                    return;
+                }
                 activeStyle = style;
             };
 
@@ -147,15 +169,29 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
 
             Parser.onStreamStart = function(stream) {
                 activeStream = stream;
+                //needPrompt   = false;
             }.bind(this);
 
             Parser.onStreamEnd = function() {
-                this.onText(activeText, activeStream);
-                activeText = '';
+                this.sendText();
                 activeStream = null;
             }.bind(this);
 
-            Parser.onText = handleText;
+            Parser.onText = function(text) {
+                // Replace any bad characters
+                text = text.replace('<', '&lt;').replace('>', '&gt;');
+
+                // Styles have to be applied during onText so they happen in the correct order.
+                // Individual highlights are handled in SendText so they cover the entire string going out.
+                if (activeStyle && this.settings.presets[activeStyle] && text.trim().length > 0) {
+                    text = applyHighlight(text, {
+                        string: text.trim(),
+                        css: this.settings.presets[activeStyle]
+                    });
+                }
+
+                activeText = activeText + text;
+            }.bind(this);
 
             socket.ondata(onGameData);
         };
@@ -164,7 +200,7 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
 
         SettingsService.load(function(settings) {
             client.settings = settings;
-        });
+        }, true);
 
         return client;
     });

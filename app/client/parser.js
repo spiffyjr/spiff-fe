@@ -3,10 +3,12 @@
 angular.module('client.parser', [])
     .factory('Parser', function() {
         var Parser = function Parser() {
+            var serverTimeOffset = 0;
+
             var xmlRegex = new RegExp(/(<(prompt|spell|right|left|inv|compass).*?\2>|<.*?>)/);
 
             var serverTimeToMs = function(timestamp) {
-                return ((timestamp * 1000) - (+new Date())) /*+ serverTimeOffset*/;
+                return ((Number(timestamp) + serverTimeOffset) - (+new Date() / 1000)) * 1000;
             };
 
             var handleProgressBar = function(matches) {
@@ -14,6 +16,8 @@ angular.module('client.parser', [])
                 var value = matches[2];
                 var text  = matches[3];
                 var max   = 0;
+
+                console.log(matches);
 
                 if (id == 'pbarStance') {
                     max = 100
@@ -40,24 +44,17 @@ angular.module('client.parser', [])
 
             this.parse = function(str) {
                 var matches;
+                var stream = false;
+                var bold   = false;
 
-                /*
-                 [LNet]-GSIV:Tillmen: "Oh.. if the line starts out empty with just a line return, you use it."
-                 [LNet]-GSIV:Tillmen: "If they line isn't empty to start with, but is after you strip the XML, you ignore it."
-                 [LNet]-GSIV:Tillmen: "Fixed!"
-                 */
-
-
-
-                //console.log(str);
                 while (str.length > 0) {
                     matches = xmlRegex.exec(str);
-
                     if (matches && matches.index == 0) {
                         var xml = matches[1];
+
                         str = str.slice(xml.length);
 
-                        if (matches = xml.match(/^<progressBar id='(.*?)' value='([0-9]+)'(?: text='(.*)')?/)) {
+                        if (matches = xml.match(/^<progressBar id='(.*?)' value='(.*)'(?: text='(?:\1 )?(.*))?'/)) {
                             handleProgressBar(matches);
                         } else if (matches = xml.match(/^<(?:style|preset) id=('|")(.*?)\1/)) {
                             if (matches[2]) {
@@ -67,18 +64,23 @@ angular.module('client.parser', [])
                             }
                         } else if (xml == '<pushBold/>' || xml == '<b>') {
                             this.onStyleStart('bold');
-                        } else if (matches = xml.match(/^<prompt time=('|")([0-9]+)\1.*?>(.*?)&gt;<\/prompt>$/)) {
-                            this.onPrompt(matches[2], matches[3]);
+                            bold = true;
                         } else if (xml == '<popBold/>' || xml == '</b>') {
                             this.onStyleEnd();
-                        } else if (xml.match(/<a/)) {
-                            //this.onStyleStart('link');
-                        } else if (xml == '</a>') {
-                            //this.onStyleEnd();
+                            bold = false;
+                        } else if (matches = xml.match(/^<prompt time=('|")([0-9]+)\1.*?>(.*?)&gt;<\/prompt>$/)) {
+                            serverTimeOffset = Number((+new Date() / 1000) - matches[2]);
+                            this.onPrompt(matches[2], matches[3]);
+                        /*} else if (/<a/.test(xml) && !/coord="\d+,\d+"/.test(xml) && !bold) {
+                            this.onStyleStart('link');
+                        } else if (xml == '</a>' && !bold) {
+                            this.onStyleEnd();*/
                         } else if (matches = xml.match(/^<(?:pushStream|component) id=("|')(.*?)\1[^>]*\/?>$/)) {
                             this.onStreamStart(matches[2]);
-                        } else if (xml.match(/^<popStream/) || xml == '</component>') {
+                            stream = true;
+                        } else if (/^<popStream/.test(xml) || xml == '</component>') {
                             this.onStreamEnd();
+                            stream = false;
                         } else if (matches = xml.match(/^<roundTime value=('|")([0-9]+)\1/)) {
                             this.onRoundTime('hard', serverTimeToMs(matches[2]));
                         } else if (matches = xml.match(/^<castTime value=('|")([0-9]+)\1/)) {
@@ -89,21 +91,24 @@ angular.module('client.parser', [])
                             this.onStyleStart(matches[2]);
                         } else if (xml == '</preset>') {
                             this.onStyleEnd();
-                        } else if (xml.match(/^<(?:dialogdata|d|\/d|\/?component|label|skin|output)/)) {
+                        } else if (matches = xml.match(/^<(right|left).*>([\w\s'-]+)<\/\1>/)) {
+                            this.onHandUpdated(matches[1], matches[2]);
+                        } else if (matches = xml.match(/^<indicator id=('|")Icon([A-Z]+)\1 visible=('|")([yn])\3/)) {
+                            this.onIndicator(matches[2].toLowerCase(), matches[4] == 'y' ? true : false);
+                        } else if (/^<(?:dialogdata|d|\/d|\/?component|image|label|skin|output|a|\/a|resource|streamWindow|progressBar|compDef|sep)/.test(xml)) {
                         } else {
-                            //console.log('unhandled xmlTag: ' + xml);
+                            console.log('unhandled xmlTag: ' + xml);
                         }
 
-                        if (str.trim().length == 0) {
+                        // str.trim().length == 0 ?
+                        if (!stream && str.replace(/[\r\n]+/gm, '').length == 0) {
                             break;
                         }
                     } else {
                         var text = matches ? str.slice(0, matches.index) : str;
                         str = str.slice(text.length);
 
-                        if (text.length > 0) {
-                            this.onText(text);
-                        }
+                        this.onText(text);
                     }
                 }
 
@@ -138,8 +143,16 @@ angular.module('client.parser', [])
                 console.log('onStreamEnd');
             };
 
+            this.onHandUpdated = function(hand, item) {
+                console.log('onHandUpdated: ' + hand + ', item: ' + item);
+            };
+
             this.onPrompt = function(timestamp, status) {
                 console.log('onPrompt: ' + timestamp, ', status: ' + status);
+            };
+
+            this.onIndicator = function(type, value) {
+                console.log('onIndicator: ' + type + ', value: ' + value);
             };
 
             this.onText = function(text) {

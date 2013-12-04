@@ -1,9 +1,15 @@
+html {
+    border: 3px solid #282828;
+    -webkit-border-radius: 10px;
+}
+
 html, body {
     -webkit-user-select: text;
     padding: 5px;
     height: 100%;
 }
 
+/*
 ::-webkit-scrollbar {
     width: 12px;
 }
@@ -23,10 +29,8 @@ html, body {
 ::-webkit-scrollbar-thumb:window-inactive {
     background: #ccc;
 }
-
-.buffer {
-    overflow-y: scroll;
-    /*white-space: pre-wrap;*/
+*/
+.bordered {
     padding: 6px 12px;
     border: 1px solid #5e5e5e;
     border-radius: 4px;
@@ -35,23 +39,41 @@ html, body {
     background-color: #0c0c0c;
 }
 
+.bleeding {
+    color: red;
+}
+
+.diseased {
+    color: purple;
+}
+
+.poisoned {
+    color: green;
+}
+
+.buffer {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 .game-content {
     white-space: pre-wrap;
 }
 
 .flex, .flex-column {
     display: flex;
-    height: 100%;
 }
 
 .flex-column {
     flex-direction: column;
 }
 
-.main-window {
-    flex: 1;
+.ng-hide {
+    display: none!important;
+}
+
+#main-window {
     height: 100%;
-    margin-right: 10px;
 }
 
 #header {
@@ -67,28 +89,44 @@ html, body {
     margin-bottom: 10px;
 }
 
-#game {
+#game-window {
     flex: 1;
     margin-bottom: 10px;
+}
+
+#left {
+    margin-right: 5px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 #logons {
-    flex: 0.50;
-    margin-bottom: 10px;
-}
-
-#charinfo {
     flex: 1;
+}
+
+#middle {
+    flex: 1;
+}
+
+#game {
+    flex: 1;
+}
+
+#logons {
+    overflow: hidden;
     margin-bottom: 10px;
 }
 
-#settings {
-    height: 30px;
+#hands div {
+    font-size: 12px;
+}
+
+#hands div:first-child {
+    margin-bottom: 5px;
 }
 
 #bottom {
     position: relative;
-    display: flex;
 }
 
 #command {
@@ -150,24 +188,47 @@ html, body {
 }
 
 #status {
-    margin-bottom: 10px;
+    margin-top: 12px;
     font-size: 12px;
+    text-align: center;
+    height: 30px;
 }
 
-#status span {
-    position: relative;
+#indicators {
+    margin-left: 10px;
+}
+
+#indicators .invisible {
+    color: #0c0c0c;
+}
+
+#combat {
+    color: black;
+}
+
+#vitals {
+    margin-right: 10px;
 }
 
 #status span span {
+    position: relative;
+    height: 18px;
+}
+
+#status span span span {
     position: absolute;
+    height: 18px;
     left: 3px;
+    top: 0;
     font-weight: bold;
     text-shadow: 0 0 4px #000;
 }
 
 #status progress {
-    width: 100px;
+    width: 50px;
     height: 18px;
+    margin-bottom: 2px;
+    vertical-align: middle;
     background-color: #0c0c0c;
 }
 

@@ -1,21 +1,41 @@
-<div id="status" ng-controller="StatusCtrl">
-    <span class="health">
-        <progress value="{{ status.health.current }}" max="{{ status.health.max }}"></progress>
-        <span><i class="fa fa-heart"></i> {{ status.health.current }}</span>
-    </span>
-    <span class="mana">
-        <progress value="{{ status.mana.current }}" max="{{ status.mana.max }}"></progress>
-        <span><i class="fa fa-bolt"></i> {{ status.mana.current }}</span>
-    </span>
-    <span class="stamina">
-        <progress value="{{ status.stamina.current }}" max="{{ status.stamina.max }}"></progress>
-        <span><i class="fa fa-beer"></i> {{ status.stamina.current }}</span>
-    </span>
-    <span class="spirit">
-        <progress value="{{ status.spirit.current }}" max="{{ status.spirit.max }}"></progress>
-        <span><i class="fa fa-bullhorn"></i> {{ status.spirit.current }}</span>
-    </span>
-    <span class="pbarStance"><i class="fa fa-shield fa-lg"></i> {{ status.pbarStance.current }}%</span>
-    <span class="encumlevel"><i class="fa fa-anchor fa-lg"></i> {{ status.encumlevel.current }}%</span>
-    <span class="mindState"><i class="fa fa-lightbulb-o fa-lg"></i> {{ status.mindState.current }}%</span>
-</div>
+<span ng-controller="StatusCtrl">
+    <div id="status">
+        <span id="vitals" class="bordered">
+            <span class="health">
+                <progress value="{{ status.health.current }}" max="{{ status.health.max }}"></progress>
+                <span><i class="fa fa-heart"></i> {{ status.health.current }}</span>
+            </span>
+            <span class="mana">
+                <progress value="{{ status.mana.current }}" max="{{ status.mana.max }}"></progress>
+                <span><i class="fa fa-bolt"></i> {{ status.mana.current }}</span>
+            </span>
+            <span class="stamina">
+                <progress value="{{ status.stamina.current }}" max="{{ status.stamina.max }}"></progress>
+                <span><i class="fa fa-beer"></i> {{ status.stamina.current }}</span>
+            </span>
+            <span class="spirit">
+                <progress value="{{ status.spirit.current }}" max="{{ status.spirit.max }}"></progress>
+                <span><i class="fa fa-bullhorn"></i> {{ status.spirit.current }}</span>
+            </span>
+        </span>
+        <span id="combat" class="bordered">
+            <span class="pbarStance">
+                <progress value="{{ status.pbarStance.current }}" max="{{ status.pbarStance.max }}"></progress>
+                <span><i class="fa fa-shield"></i> {{ status.pbarStance.current }}%</span>
+            </span>
+            <span class="encumlevel">
+                <progress value="{{ status.encumlevel.current }}" max="{{ status.encumlevel.max }}"></progress>
+                <span><i class="fa fa-anchor"></i> {{ status.encumlevel.current }}%</span>
+            </span>
+            <span class="mindState">
+                <progress value="{{ status.mindState.current }}" max="{{ status.mindState.max }}"></progress>
+                <span><i class="fa fa-lightbulb-o"></i> {{ status.mindState.current }}%</span>
+            </span>
+        </span>
+        <span id="indicators" class="bordered">
+            <i ng-class="{invisible: !bleeding}" class="bleeding fa fa-tint fa-lg">&nbsp;&nbsp;</i>
+            <i ng-class="{invisible: !diseased}" class="diseased fa fa-tint fa-lg">&nbsp;&nbsp;</i>
+            <i ng-class="{invisible: !poisoned}" class="poisoned fa fa-tint fa-lg"></i>
+        </span>
+    </div>
+</span>

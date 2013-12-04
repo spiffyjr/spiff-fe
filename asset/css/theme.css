@@ -8,7 +8,7 @@ body {
 }
 
 .buffer {
-    font-size: 13px;
+    font-size: 12px;
     font-family: "Lucida Console", Monaco, monospace;
 }
 
@@ -29,13 +29,13 @@ body {
 }
 
 #status .mindState {
-    color: sandybrown;
+    color: lightgrey;
 }
 
 #status .pbarStance {
-    color: sandybrown;
+    color: lightgrey;
 }
 
 #status .encumlevel {
-    color: sandybrown;
+    color: lightgrey;
 }

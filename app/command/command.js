@@ -57,9 +57,9 @@ angular.module('command', ['client'])
             if (event.altKey) {
                 key = "alt+" + key;
             } else if (event.ctrlKey) {
-                key = "ctrl" + key;
+                key = "ctrl+" + key;
             } else if (event.shiftKey) {
-                key = "shift" + key;
+                key = "shift+" + key;
             }
 
             var macro = Client.settings.macros[key];

@@ -5,6 +5,7 @@ angular.module('client.socket', [])
         var Socket = function Socket() {
             var socketId;
             var cbOnData;
+            var buffer = '';
 
             var stringToArrayBuffer = function(str, callback) {
                 var bb = new Blob([str]);
@@ -32,8 +33,12 @@ angular.module('client.socket', [])
                     }
 
                     arrayBufferToString(readInfo.data, function(str) {
-                        if (cbOnData) {
-                            cbOnData(str);
+                        buffer = buffer + str;
+
+                        var index;
+                        while ((index = buffer.search(/\r\n/)) != -1) {
+                            cbOnData(buffer.slice(0, index + 2));
+                            buffer = buffer.substr(index + 2);
                         }
                     });
                 }

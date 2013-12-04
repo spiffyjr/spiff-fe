@@ -12,6 +12,9 @@ angular.module('settings', [])
                         "color": "yellow",
                         "fontWeight": "bold"
                     },
+                    "deaths": {
+                        "color": "red"
+                    },
                     "casting": {
                         "color": "#9090ff"
                     },
@@ -26,6 +29,12 @@ angular.module('settings', [])
                     },
                     "lnet": {
                         "color": "#0099ff"
+                    },
+                    "logons": {
+                        "color": "darkgreen"
+                    },
+                    "logoffs": {
+                        "color": "darkred"
                     },
                     "numbers": {
                         "color": "#555555"
@@ -97,15 +106,20 @@ angular.module('settings', [])
                     }
                 ],
                 "macros": {
-                    "alt+r": "\\xstance defensive\\r",
-                    "alt+q": "\\xstance offensive\\r"
+                    "ctrl+d": "\\xstance defensive\\r",
+                    "ctrl+o": "\\xstance offensive\\r"
                 },
                 "presets": {
                     "bold": "bold",
+                    "disconnects": "logoffs",
+                    "deaths": "deaths",
                     "familiar": "familiar",
                     "link": "link",
+                    "logons": "logons",
+                    "logoffs": "logoffs",
                     "prompt": "prompt",
                     "roomName": "roomName",
+                    "speech": "speech",
                     "thoughts": "thoughts",
                     "voln": "voln",
                     "whisper": "whisper"

@@ -9,6 +9,15 @@ angular.module('game', ['client', 'client.parser'])
         $scope.logons   = [];
         $scope.game     = [];
 
+        $scope.hands = {
+            left: 'Empty',
+            right: 'Empty'
+        };
+
+        Parser.onHandUpdated = function(hand, item) {
+            $scope.hands[hand] = item;
+        };
+
         Parser.onLaunchUrl = function(url) {
             window.open('http://www.play.net/' + url);
         };
