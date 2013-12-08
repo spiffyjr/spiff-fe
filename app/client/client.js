@@ -73,6 +73,10 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 this.onText(text + "\n", null);
             }.bind(this);
 
+            this.getSocket = function() {
+                return socket;
+            };
+
             this.sendText = function() {
                 if (activeText == '') {
                     return;

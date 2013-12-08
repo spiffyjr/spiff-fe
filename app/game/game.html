@@ -1,23 +1,22 @@
 <div id="main-window" class="flex-column">
-    <div id="thoughts" fe-auto-scroll class="buffer bordered">
-        <div class="game-content" ng-repeat="line in thoughts track by $index" ng-bind-html="line"></div>
+    <div id="top-window" class="flex">
+        <div id="thoughts" fe-auto-scroll class="buffer bordered">
+            <div class="game-content" ng-repeat="line in thoughts track by $index" ng-bind-html="line"></div>
+        </div>
+        <div id="room_objs" class="buffer bordered" ng-bind-html="room_objs"></div>
     </div>
     <div id="game-window" class="flex">
-        <div id="left" class="flex-column col-lg-2 col-md-2 col-xs-3">
+        <div id="left" class="flex-column col-md-2 col-sm-3 col-xs-3">
             <div id="logons" fe-auto-scroll class="buffer bordered">
                 <div class="game-content" ng-repeat="line in logons track by $index" ng-bind-html="line"></div>
             </div>
-            <div id="hands">
-                <div class="bordered"><i class="fa fa-hand-o-left"></i> {{ hands.left }}</div>
-                <div class="bordered"><i class="fa fa-hand-o-right"></i> {{ hands.right }}</div>
-            </div>
         </div>
         <div id="middle" class="flex-column">
-            <div id="game" fe-auto-scroll class="buffer bordered">
-                <div class="game-content" ng-repeat="line in game track by $index" ng-bind-html="line"></div>
-            </div>
+            <div id="game" fe-auto-scroll class="buffer bordered"></div>
             <div ng-include="'status/status.html'"></div>
-            <div ng-include="'command/command.html'"></div>
+            <div id="command" ng-include="'command/command.html'"></div>
+            <div ng-include="'game/hands.html'"></div>
         </div>
+        <!-- <div id="right" class="hidden-sm hidden-xs col-md-2 col-sm-2 col-xs-3"></div> -->
     </div>
 </div>

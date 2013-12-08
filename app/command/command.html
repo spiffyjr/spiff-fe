@@ -1,8 +1,4 @@
-<div id="bottom">
-    <div id="command">
-        <div ng-include="'counter/counter.html'"></div>
-        <input class="form-control" ng-model="command" type="text"
-               autofocus="autofocus" placeholder="command" ng-controller="CommandCtrl"
-               ui-keydown="{'down':'down($event)', 'up':'up($event)', 'alt-enter':'enter($event)', 'ctrl-enter':'enter($event)', 'enter':'enter($event)'}">
-    </div>
-</div>
+<div ng-include="'counter/counter.html'"></div>
+<input class="form-control" ng-model="command" type="text"
+       autofocus="autofocus" placeholder="command" ng-controller="CommandCtrl"
+       ui-keydown="{'down':'down($event)', 'up':'up($event)', 'alt-enter':'enter($event)', 'ctrl-enter':'enter($event)', 'enter':'enter($event)'}">

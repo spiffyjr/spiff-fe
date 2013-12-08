@@ -26,9 +26,13 @@ angular.module('client.socket', [])
             };
 
             var read = function(readInfo) {
+                if (!socketId) {
+                    return;
+                }
+
                 if (readInfo) {
                     if (readInfo.resultCode < 0) {
-                        console.log('disconncted');
+                        this.disconnect();
                         return;
                     }
 
@@ -44,7 +48,7 @@ angular.module('client.socket', [])
                 }
 
                 chrome.socket.read(socketId, null, read);
-            };
+            }.bind(this);
 
             this.ondata = function(callback) {
                 cbOnData = callback;
@@ -72,11 +76,16 @@ angular.module('client.socket', [])
                 });
             };
 
+            this.getSocketId = function() {
+                return socketId;
+            };
+
             this.disconnect = function() {
                 if (!socketId) {
                     return;
                 }
                 chrome.socket.disconnect(socketId);
+                chrome.socket.destroy(socketId);
                 socketId = null;
             };
 

@@ -4,6 +4,7 @@ angular.module('status', ['client', 'client.parser'])
     .controller('StatusCtrl', function($scope, Client, Parser) {
         $scope.status     = {};
         $scope.roundtime  = 5;
+        $scope.position    = 'standing';
         $scope.bleeding   = false;
         $scope.diseased   = false;
         $scope.poisoned   = false;

@@ -9,27 +9,6 @@ html, body {
     height: 100%;
 }
 
-/*
-::-webkit-scrollbar {
-    width: 12px;
-}
-
-::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    background: #555;
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
-}
-::-webkit-scrollbar-thumb:window-inactive {
-    background: #ccc;
-}
-*/
 .bordered {
     padding: 6px 12px;
     border: 1px solid #5e5e5e;
@@ -37,6 +16,26 @@ html, body {
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
     box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
     background-color: #0c0c0c;
+}
+
+#left-hand {
+    background: url('/asset/img/left_hand.png') no-repeat;
+    text-indent: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+#right-hand {
+    background: url('/asset/img/right_hand.png') no-repeat;
+    text-indent: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+#casting {
+    background: url('/asset/img/spell_ready.png') no-repeat;
+    text-indent: 20px;
+    vertical-align: middle;
 }
 
 .bleeding {
@@ -84,9 +83,13 @@ html, body {
     height: 100%;
 }
 
-#thoughts {
-    height: 25%;
+#top-window {
+    height: 17%;
     margin-bottom: 10px;
+}
+
+#thoughts {
+    flex: 1;
 }
 
 #game-window {
@@ -100,8 +103,10 @@ html, body {
     padding-right: 0;
 }
 
-#logons {
-    flex: 1;
+#right {
+    margin-left: 5px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 #middle {
@@ -113,25 +118,19 @@ html, body {
 }
 
 #logons {
+    flex: 1;
     overflow: hidden;
-    margin-bottom: 10px;
 }
 
-#hands div {
-    font-size: 12px;
-}
-
-#hands div:first-child {
-    margin-bottom: 5px;
-}
-
-#bottom {
-    position: relative;
+#room_objs {
+    flex: 1;
 }
 
 #command {
-    flex: 0.75;
     width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    position: relative;
 }
 
 #command input {
@@ -187,62 +186,64 @@ html, body {
     width: 100%;
 }
 
-#status {
-    margin-top: 12px;
+.status {
+    margin-top: 5px;
     font-size: 12px;
     text-align: center;
-    height: 30px;
 }
 
 #indicators {
-    margin-left: 10px;
+    margin-bottom: 5px;
 }
 
 #indicators .invisible {
     color: #0c0c0c;
 }
 
-#combat {
-    color: black;
+#position {
+    width: 48px;
 }
 
-#vitals {
-    margin-right: 10px;
+#position.standing {
+    background: url('/asset/img/standing.png') no-repeat;
 }
 
-#status span span {
+#position.prone {
+    background: url('/asset/img/prone.png') no-repeat;
+}
+
+#position.kneeling {
+    background: url('/asset/img/kneeling.png') no-repeat;
+}
+
+#position.sitting {
+    background: url('/asset/img/sitting.png') no-repeat;
+}
+
+.status div {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.status div i {
     position: relative;
-    height: 18px;
+    top: -17px;
+    margin-bottom: -17px;
+    display: block;
 }
 
-#status span span span {
-    position: absolute;
-    height: 18px;
-    left: 3px;
-    top: 0;
-    font-weight: bold;
-    text-shadow: 0 0 4px #000;
-}
-
-#status progress {
-    width: 50px;
-    height: 18px;
-    margin-bottom: 2px;
-    vertical-align: middle;
-    background-color: #0c0c0c;
-}
-
-#status progress::-webkit-progress-bar {
-    background-color: #5c5c5c;
-    border-radius: 4px;
-}
-
-#status progress::-webkit-progress-value {
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
-}
-
-#status .stamina span {
+.status .stamina {
     color: black;
-    text-shadow: 0 0 4px #fff;
+    font-weight: bold;
+}
+
+progress {
+    color: #0063a6;
+    border: 1px solid #5e5e5e;
+    background: #fff;
+    border-radius: 4px;
+    height: 15px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    width: 100%;
 }

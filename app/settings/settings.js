@@ -39,6 +39,10 @@ angular.module('settings', [])
                     "numbers": {
                         "color": "#555555"
                     },
+                    "mono": {
+                        "fontFamily": '"Lucida Console", Monaco, monospace',
+                        "whiteSpace": "pre-wrap"
+                    },
                     "paths": {
                         "color": "#0099ff"
                     },
@@ -117,6 +121,7 @@ angular.module('settings', [])
                     "link": "link",
                     "logons": "logons",
                     "logoffs": "logoffs",
+                    "mono": "mono",
                     "prompt": "prompt",
                     "roomName": "roomName",
                     "speech": "speech",

@@ -15,22 +15,20 @@ angular.module('client.parser', [])
                 var id    = matches[1];
                 var value = matches[2];
                 var text  = matches[3];
-                var max   = 0;
-
-                console.log(matches);
+                var max   = 100;
 
                 if (id == 'pbarStance') {
-                    max = 100
+                    //max = 100
                 } else if (id == 'mindState') {
                     if (text == 'saturated') {
                         value = 110;
                     }
-                    max = 110;
+                    //max = 110;
                 } else if (id == 'encumlevel') {
                     if (text == 'Overloaded') {
                         value = 110;
                     }
-                    max = 110;
+                    //max = 110;
                 } else if (matches = text.match(/(\-?[0-9]+)\/([0-9]+)/)) {
                     value = matches[1];
                     max   = matches[2];
@@ -87,6 +85,10 @@ angular.module('client.parser', [])
                             this.onRoundTime('soft', serverTimeToMs(matches[2]));
                         } else if (matches = xml.match(/^<LaunchURL src="(.*)" \/>/)) {
                             this.onLaunchUrl(matches[1]);
+                        } else if (matches = xml.match(/^<output class=('|")(\w+)\1\/>/)) {
+                            this.onStyleStart(matches[2]);
+                        } else if (/<output class=('|")\1\/>/.test(xml)) {
+                            this.onStyleEnd();
                         } else if (matches = xml.match(/^<preset id=('|")(.*?)\1>$/)) {
                             this.onStyleStart(matches[2]);
                         } else if (xml == '</preset>') {
@@ -94,10 +96,10 @@ angular.module('client.parser', [])
                         } else if (matches = xml.match(/^<(right|left).*>([\w\s'-]+)<\/\1>/)) {
                             this.onHandUpdated(matches[1], matches[2]);
                         } else if (matches = xml.match(/^<indicator id=('|")Icon([A-Z]+)\1 visible=('|")([yn])\3/)) {
-                            this.onIndicator(matches[2].toLowerCase(), matches[4] == 'y' ? true : false);
-                        } else if (/^<(?:dialogdata|d|\/d|\/?component|image|label|skin|output|a|\/a|resource|streamWindow|progressBar|compDef|sep)/.test(xml)) {
+                            this.onIndicator(matches[2].toLowerCase(), matches[4] == 'y');
+                        } else if (/^<(?:dialogdata|d|\/d|\/?component|image|label|skin|a|\/a|resource|streamWindow|progressBar|compDef|sep)/.test(xml)) {
                         } else {
-                            console.log('unhandled xmlTag: ' + xml);
+                            //console.log('unhandled xmlTag: ' + xml);
                         }
 
                         // str.trim().length == 0 ?
@@ -111,6 +113,10 @@ angular.module('client.parser', [])
                         this.onText(text);
                     }
                 }
+
+                /*
+                 <compass><dir value="ne"/><dir value="e"/><dir value="se"/><dir value="sw"/><dir value="w"/><dir value="nw"/></compass>
+                 */
 
                 this.onParseComplete();
             };

@@ -5,13 +5,15 @@ angular.module('game', ['client', 'client.parser'])
         $routeProvider.when('/game', { controller: 'GameCtrl', templateUrl: 'game/game.html' });
     })
     .controller('GameCtrl', function($scope, Client, Parser) {
-        $scope.thoughts = [];
-        $scope.logons   = [];
-        $scope.game     = [];
+        $scope.thoughts  = [];
+        $scope.logons    = [];
+        $scope.game      = [];
+        $scope.room_objs = '';
 
         $scope.hands = {
             left: 'Empty',
-            right: 'Empty'
+            right: 'Empty',
+            casting: 'None'
         };
 
         Parser.onHandUpdated = function(hand, item) {
@@ -26,15 +28,24 @@ angular.module('game', ['client', 'client.parser'])
             if (!stream) {
                 stream = 'game';
             }
+            stream = stream.replace(/\s+/, '_');
+            if (stream == 'death') {
+                stream = 'logons'
+            }
             if (undefined === $scope[stream]) {
                 return;
             }
 
-            // Remove end of lines because they're handled by div's.
-            //text = text.replace(/^[\r\n]/gm, '').replace(/[\r\n]$/gm, '');
+            var ele = angular.element('<div>');
+            ele.addClass('game-content');
+            ele.html(text);
 
-            $scope[stream].push(text);
-            $scope[stream] = $scope[stream].splice(-100);
+            if (stream == 'room_objs') {
+                document.getElementById(stream).innerHTML = ele[0].innerHTML;
+            } else {
+                document.getElementById(stream).appendChild(ele[0]);
+            }
+
             $scope.$$phase || $scope.$apply();
         };
     });
