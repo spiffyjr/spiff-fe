@@ -1,40 +1,30 @@
-<div ng-controller="StatusCtrl">
-    <div class="status flex">
-        <div class="health col-xs-2">
-            <progress value="{{ status.health.current }}" max="{{ status.health.max }}"></progress>
-            <i class="fa fa-heart"> {{ status.health.current }}</i>
-        </div>
-        <div class="mana col-xs-2">
-            <progress value="{{ status.mana.current }}" max="{{ status.mana.max }}"></progress>
-            <i class="fa fa-bolt"> {{ status.mana.current }}</i>
-        </div>
-        <div class="stamina col-xs-2">
-            <progress value="{{ status.stamina.current }}" max="{{ status.stamina.max }}"></progress>
-            <i class="fa fa-beer"> {{ status.stamina.current }}</i>
-        </div>
-        <div class="spirit col-xs-2">
-            <progress value="{{ status.spirit.current }}" max="{{ status.spirit.max }}"></progress>
-            <i class="fa fa-bullhorn"> {{ status.spirit.current }}</i>
-        </div>
-        <div class="pbarStance col-xs-2">
-            <progress value="{{ status.pbarStance.current }}" max="{{ status.pbarStance.max }}"></progress>
-            <i class="fa fa-shield"> {{ status.pbarStance.current }}%</i>
-        </div>
-        <div class="encumlevel col-xs-2">
-            <progress value="{{ status.encumlevel.current }}" max="{{ status.encumlevel.max }}"></progress>
-            <i class="fa fa-anchor"> {{ status.encumlevel.current }}%</i>
-        </div>
-        <div class="mindState col-xs-2">
-            <progress value="{{ status.mindState.current }}" max="{{ status.mindState.max }}"></progress>
-            <i class="fa fa-lightbulb-o"> {{ status.mindState.current }}%</i>
-        </div>
+<div class="status flex">
+    <div class="health col-xs-2">
+        <progress value="{{ status.health.current }}" max="{{ status.health.max }}"></progress>
+        <i class="fa fa-heart"> {{ status.health.current }}</i>
     </div>
-    <!--
-    <div id="indicators" class="bordered">
-        <i ng-class="{invisible: !bleeding}" class="bleeding fa fa-tint fa-lg">&nbsp;&nbsp;</i>
-        <i ng-class="{invisible: !diseased}" class="diseased fa fa-tint fa-lg">&nbsp;&nbsp;</i>
-        <i ng-class="{invisible: !poisoned}" class="poisoned fa fa-tint fa-lg">&nbsp;&nbsp;</i>
+    <div class="mana col-xs-2">
+        <progress value="{{ status.mana.current }}" max="{{ status.mana.max }}"></progress>
+        <i class="fa fa-bolt"> {{ status.mana.current }}</i>
     </div>
-    <div id="position" class="{{ position }}"></div>
-    -->
+    <div class="stamina col-xs-2">
+        <progress value="{{ status.stamina.current }}" max="{{ status.stamina.max }}"></progress>
+        <i class="fa fa-beer"> {{ status.stamina.current }}</i>
+    </div>
+    <div class="spirit col-xs-2">
+        <progress value="{{ status.spirit.current }}" max="{{ status.spirit.max }}"></progress>
+        <i class="fa fa-bullhorn"> {{ status.spirit.current }}</i>
+    </div>
+    <div class="pbarStance col-xs-2">
+        <progress value="{{ status.pbarStance.current }}" max="{{ status.pbarStance.max }}"></progress>
+        <i class="fa fa-shield"> {{ status.pbarStance.current }}%</i>
+    </div>
+    <div class="encumlevel col-xs-2">
+        <progress value="{{ status.encumlevel.current }}" max="{{ status.encumlevel.max }}"></progress>
+        <i class="fa fa-anchor"> {{ status.encumlevel.current }}%</i>
+    </div>
+    <div class="mindState col-xs-2">
+        <progress value="{{ status.mindState.current }}" max="{{ status.mindState.max }}"></progress>
+        <i class="fa fa-lightbulb-o"> {{ status.mindState.current }}%</i>
+    </div>
 </div>

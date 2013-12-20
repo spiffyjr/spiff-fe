@@ -102,7 +102,6 @@ angular.module('client.parser', [])
                             //console.log('unhandled xmlTag: ' + xml);
                         }
 
-                        // str.trim().length == 0 ?
                         if (!stream && str.replace(/[\r\n]+/gm, '').length == 0) {
                             break;
                         }
@@ -113,10 +112,6 @@ angular.module('client.parser', [])
                         this.onText(text);
                     }
                 }
-
-                /*
-                 <compass><dir value="ne"/><dir value="e"/><dir value="se"/><dir value="sw"/><dir value="w"/><dir value="nw"/></compass>
-                 */
 
                 this.onParseComplete();
             };

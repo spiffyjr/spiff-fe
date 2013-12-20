@@ -5,9 +5,9 @@ angular.module('game', ['client', 'client.parser'])
         $routeProvider.when('/game', { controller: 'GameCtrl', templateUrl: 'game/game.html' });
     })
     .controller('GameCtrl', function($scope, Client, Parser) {
-        $scope.thoughts  = [];
-        $scope.logons    = [];
-        $scope.game      = [];
+        $scope.thoughts  = '';
+        $scope.logons    = '';
+        $scope.game      = '';
         $scope.room_objs = '';
 
         $scope.hands = {
@@ -36,16 +36,7 @@ angular.module('game', ['client', 'client.parser'])
                 return;
             }
 
-            var ele = angular.element('<div>');
-            ele.addClass('game-content');
-            ele.html(text);
-
-            if (stream == 'room_objs') {
-                document.getElementById(stream).innerHTML = ele[0].innerHTML;
-            } else {
-                document.getElementById(stream).appendChild(ele[0]);
-            }
-
+            $scope[stream] = text;
             $scope.$$phase || $scope.$apply();
         };
     });
