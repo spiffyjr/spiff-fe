@@ -1,0 +1,43 @@
+body {
+    background-color: #000;
+    color: #ccc;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 14px;
+}
+
+.page-header {
+    margin-top: 0;
+}
+
+.status .health progress::-webkit-progress-value {
+    background: darkred;
+    padding-left: 0;
+}
+
+.status .mana progress::-webkit-progress-value {
+    background: darkblue;
+}
+
+.status .stamina progress::-webkit-progress-value {
+    background: yellow;
+}
+
+.status .spirit progress::-webkit-progress-value {
+    background: purple;
+    padding-right: 0;
+}
+
+.status .mindState {
+    color: lightgrey;
+    margin-bottom: 5px;
+}
+
+.status .pbarStance {
+    color: lightgrey;
+    margin-bottom: 5px;
+}
+
+.status .encumlevel {
+    color: lightgrey;
+    margin-bottom: 5px;
+}

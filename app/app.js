@@ -12,6 +12,7 @@ var app = angular.module('app', [
 
     'command',
     'counter',
+    'header',
     'index',
     'indicator',
     'game',

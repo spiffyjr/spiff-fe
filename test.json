@@ -1,0 +1,131 @@
+{
+    "css": {
+        "bold": {
+            "color": "yellow",
+            "fontWeight": "bold"
+        },
+        "deaths": {
+            "color": "red"
+        },
+        "casting": {
+            "color": "#9090ff"
+        },
+        "code": {
+            "color": "#008000"
+        },
+        "lich": {
+            "color": "#008000"
+        },
+        "link": {
+            "color": "saddlebrown"
+        },
+        "lnet": {
+            "color": "#0099ff"
+        },
+        "logons": {
+            "color": "darkgreen"
+        },
+        "logoffs": {
+            "color": "darkred"
+        },
+        "numbers": {
+            "color": "#555555"
+        },
+        "mono": {
+            "fontFamily": "\"Lucida Console\", Monaco, monospace",
+            "whiteSpace": "pre-wrap"
+        },
+        "paths": {
+            "color": "#0099ff"
+        },
+        "prime": {
+            "color": "#808000"
+        },
+        "private": {
+            "color": "#ffffff",
+            "fontWeight": "bold"
+        },
+        "prompt": {
+            "color": "#555555"
+        },
+        "roomName": {
+            "color": "white",
+            "fontWeight": "bold"
+        },
+        "status": {
+            "color": "#565656"
+        },
+        "speech": {
+            "color": "#66ff66"
+        },
+        "whisper": {
+            "color": "#66ff66"
+        },
+        "familiar": {
+            "backgroundColor": "#00001a"
+        },
+        "thoughts": {
+            "backgroundColor": "#001a00"
+        },
+        "voln": {
+            "backgroundColor": "#001a00"
+        },
+        "position": {
+            "color": "#565656"
+        }
+    },
+    "highlights": [
+        {
+            "css": "numbers",
+            "regex": "\\([0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\)$"
+        },
+        {
+            "css": "lnet",
+            "regex": "^\\[LNet\\]"
+        },
+        {
+            "css": "prime",
+            "regex": "^\\[Prime\\]"
+        },
+        {
+            "css": "code",
+            "regex": "^\\[Code\\]"
+        },
+        {
+            "css": "paths",
+            "regex": "Obvious (?:exits|paths):"
+        },
+        {
+            "css": "private",
+            "regex": "^\\[Private(?:To)?\\]"
+        },
+        {
+            "css": "lich",
+            "regex": "^--- Lich:.*"
+        },
+        {
+            "css": "position",
+            "regex": "\\((?:calmed|dead|flying|hiding|kneeling|prone|sitting|sleeping|stunned)\\)"
+        }
+    ],
+    "macros": {
+        "ctrl+d": "\\xstance defensive\\r",
+        "ctrl+o": "\\xstance offensive\\r"
+    },
+    "presets": {
+        "bold": "bold",
+        "disconnects": "logoffs",
+        "deaths": "deaths",
+        "familiar": "familiar",
+        "link": "link",
+        "logons": "logons",
+        "logoffs": "logoffs",
+        "mono": "mono",
+        "prompt": "prompt",
+        "roomName": "roomName",
+        "speech": "speech",
+        "thoughts": "thoughts",
+        "voln": "voln",
+        "whisper": "whisper"
+    }
+}

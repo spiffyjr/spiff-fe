@@ -8,7 +8,7 @@ angular.module('game', ['client', 'client.parser'])
         $scope.thoughts  = '';
         $scope.logons    = '';
         $scope.game      = '';
-        $scope.room_objs = '';
+        $scope.roomobjs  = '';
 
         $scope.hands = {
             left: 'Empty',
@@ -31,6 +31,9 @@ angular.module('game', ['client', 'client.parser'])
             stream = stream.replace(/\s+/, '_');
             if (stream == 'death') {
                 stream = 'logons'
+            }
+            if (stream == 'room_objs') {
+                stream = 'roomobjs';
             }
             if (undefined === $scope[stream]) {
                 return;

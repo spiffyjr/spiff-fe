@@ -18,6 +18,8 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
 
             var needPrompt = false;
 
+            var monoEnabled = false;
+
             var activeText = '';
 
             var onGameData = function(str) {
@@ -31,7 +33,7 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 }
 
                 var tmp  = angular.element('<span>').html(str);
-                var find = hl.regex ? new RegExp(hl.regex) : hl.string;
+                var find = hl.regex ? new RegExp(hl.regex, "g") : hl.string;
 
                 findAndReplaceDOMText(tmp[0], {
                     find: find,
@@ -65,7 +67,7 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
 
                 if (this.settings.presets.prompt) {
                     text = applyHighlight(text, {
-                        regex: '.*',
+                        string: text.replace('&gt;', '>'),
                         css: this.settings.presets.prompt
                     });
                 }
@@ -79,6 +81,12 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
 
             this.sendText = function() {
                 if (activeText == '') {
+                    if (!activeStream) {
+                        if (needPrompt) {
+                            needPrompt = false;
+                            sendPrompt(promptText);
+                        }
+                    }
                     return;
                 }
 
@@ -103,7 +111,7 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                             string: matches[1],
                             css: this.settings.presets.disconnects
                         });
-                    } else if (matches = activeText.match(/(\w+) (?:just bit the dust|has been vaporized|was just incinerated)/)) {
+                    } else if (matches = activeText.match(/(\w+) (?:just bit the dust|has been vaporized|was just incinerated|echoes in your mind)/)) {
                         activeText = applyHighlight(matches[1], {
                             string: matches[1],
                             css: this.settings.presets.deaths
@@ -113,13 +121,15 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
 
                 activeText = applyHighlights(activeText);
 
-                this.onText(activeText, activeStream);
                 if (needPrompt) {
                     needPrompt = false;
                     sendPrompt(promptText);
                 }
 
-                activeText = '';
+                if (!monoEnabled) {
+                    this.onText(activeText, activeStream);
+                    activeText = '';
+                }
             };
 
             this.connect = function(hostname, port, callback) {
@@ -150,9 +160,8 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 if (promptText != newPromptText) {
                     needPrompt = false;
                     promptText = newPromptText;
-                    sendPrompt(promptText);
                 } else {
-                    needPrompt = true;
+                    needPrompt = true
                 }
             };
 
@@ -161,6 +170,11 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
             }.bind(this);
 
             Parser.onStyleStart = function(style) {
+                if (style == 'mono') {
+                    monoEnabled = true;
+                    return;
+                }
+
                 if (activeStream == 'logons') {
                     return;
                 }
@@ -168,8 +182,17 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
             };
 
             Parser.onStyleEnd = function() {
+                if (monoEnabled && this.settings.presets.mono) {
+                    activeText = applyHighlight(activeText, {
+                        string: activeText,
+                        css: this.settings.presets.mono
+                    });
+                    console.log(activeText);
+                }
+
+                monoEnabled = false;
                 activeStyle = null;
-            };
+            }.bind(this);
 
             Parser.onStreamStart = function(stream) {
                 activeStream = stream;
@@ -186,7 +209,7 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 text = text.replace('<', '&lt;').replace('>', '&gt;');
 
                 // Styles have to be applied during onText so they happen in the correct order.
-                // Individual highlights are handled in SendText so they cover the entire string going out.
+                // Individual highlights are handled in sendText so they cover the entire string going out.
                 if (activeStyle && this.settings.presets[activeStyle] && text.trim().length > 0) {
                     text = applyHighlight(text, {
                         string: text.trim(),
@@ -204,7 +227,7 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
 
         SettingsService.load(function(settings) {
             client.settings = settings;
-        }, true);
+        });
 
         return client;
     });

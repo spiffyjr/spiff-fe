@@ -9,7 +9,7 @@ angular.module('counter', ['client', 'client.parser'])
         $scope.type       = 'hard';
 
         var counterInterval;
-        var updateTime = 250;
+        var updateTime = 50;
 
         Parser.onRoundTime = function(type, value) {
             if (value < 0) {

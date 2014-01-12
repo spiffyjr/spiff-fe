@@ -1,21 +1,22 @@
-<div id="main-window" class="flex-column">
-    <div id="top-window" class="flex">
-        <div id="thoughts" class="buffer bordered" fe-auto-scroll ng-model="thoughts"></div>
-        <div id="room_objs" class="buffer bordered" ng-bind-html="room_objs"></div>
-    </div>
-    <div id="game-window" class="flex">
-        <div id="left" class="flex-column col-md-2 col-sm-3 col-xs-3">
-            <div id="logons" class="buffer bordered" fe-auto-scroll ng-model="logons"></div>
+<div class="flex-column" style="height: 100%;">
+    <div ng-include="'header/header.html'"></div>
+    <div id="game" class="flex-column">
+        <div id="game-top">
+            <div id="game-top-thoughts" class="col-xs-12 col-sm-9 overflow" fe-auto-scroll ng-model="thoughts"></div>
+            <div id="game-top-roomobjs" class="overflow col-xs-3 hidden-xs" ng-bind-html="roomobjs"></div>
         </div>
-        <div id="middle" class="flex-column">
-            <div id="game" fe-auto-scroll class="buffer bordered" ng-model="game"></div>
-            <div ng-controller="StatusCtrl" ng-include="'status/status.html'"></div>
-            <div class="flex">
-                <div id="command" ng-include="'command/command.html'"></div>
-                <div id="indicators" class="col-xs-3" ng-controller="IndicatorCtrl" ng-include="'indicator/index.html'"></div>
+        <div id="game-bottom" class="flex">
+            <div id="game-left" class="flex-column">
+                <div id="game-logons" class="hidden-xs hidden-sm" fe-auto-scroll ng-model="logons"></div>
             </div>
-            <div id="hands" class="flex" ng-include="'game/hands.html'"></div>
+
+            <div id="game-main" class="flex-column">
+                <div id="game-main-output" class="overflow" fe-auto-scroll ng-model="game"></div>
+                <div id="game-main-status" ng-include="'status/status.html'"></div>
+                <div id="game-main-counter" ng-include="'counter/counter.html'"></div>
+                <div id="game-main-command" ng-include="'command/command.html'"></div>
+                <div id="game-main-hands" ng-include="'game/hands.html'" class="hidden-xs"></div>
+            </div>
         </div>
-        <!-- <div id="right" class="hidden-sm hidden-xs col-md-2 col-sm-2 col-xs-3"></div> -->
     </div>
 </div>
