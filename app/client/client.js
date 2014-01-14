@@ -27,6 +27,10 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
             };
 
             var applyHighlight = function(str, hl) {
+                if (str.trim().length == 0) {
+                    return str;
+                }
+
                 var css = this.settings.css[hl.css];
                 if (!css) {
                     return str;
@@ -119,6 +123,19 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                     }
                 }
 
+                // Detect stance changes
+                if (matches = activeText.match(/^You are currently at an? (\w+) stance\./)) {
+                    var values = {
+                        offensive: 0,
+                        advance:   20,
+                        forward:   40,
+                        neutral:   60,
+                        guarded:   80,
+                        defensive: 100
+                    };
+                    Parser.onProgressBar('pbarStance', values[matches[1]], 100);
+                }
+
                 activeText = applyHighlights(activeText);
 
                 if (needPrompt) {
@@ -187,7 +204,6 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                         string: activeText,
                         css: this.settings.presets.mono
                     });
-                    console.log(activeText);
                 }
 
                 monoEnabled = false;

@@ -12,14 +12,20 @@ angular.module('settings', [])
                         "color": "yellow",
                         "fontWeight": "bold"
                     },
-                    "deaths": {
-                        "color": "red"
-                    },
                     "casting": {
                         "color": "#9090ff"
                     },
                     "code": {
                         "color": "#008000"
+                    },
+                    "deaths": {
+                        "color": "red"
+                    },
+                    "disk": {
+                        "color": "#88aaff"
+                    },
+                    "familiar": {
+                        "backgroundColor": "#00001a"
                     },
                     "lich": {
                         "color": "#008000"
@@ -30,21 +36,27 @@ angular.module('settings', [])
                     "lnet": {
                         "color": "#0099ff"
                     },
+                    "logoffs": {
+                        "color": "darkred"
+                    },
                     "logons": {
                         "color": "darkgreen"
                     },
-                    "logoffs": {
-                        "color": "darkred"
+                    "magic": {
+                        "color": "#9090ff"
+                    },
+                    "mono": {
+                        "fontFamily": "\"Lucida Console\", Monaco, monospace",
+                        "whiteSpace": "pre-wrap"
                     },
                     "numbers": {
                         "color": "#555555"
                     },
-                    "mono": {
-                        "fontFamily": '"Lucida Console", Monaco, monospace',
-                        "whiteSpace": "pre-wrap"
-                    },
                     "paths": {
                         "color": "#0099ff"
+                    },
+                    "position": {
+                        "color": "#565656"
                     },
                     "prime": {
                         "color": "#808000"
@@ -60,29 +72,26 @@ angular.module('settings', [])
                         "color": "white",
                         "fontWeight": "bold"
                     },
-                    "status": {
-                        "color": "#565656"
-                    },
                     "speech": {
                         "color": "#66ff66"
                     },
-                    "whisper": {
-                        "color": "#66ff66"
-                    },
-                    "familiar": {
-                        "backgroundColor": "#00001a"
+                    "status": {
+                        "color": "#565656"
                     },
                     "thoughts": {
                         "backgroundColor": "#001a00"
                     },
                     "voln": {
                         "backgroundColor": "#001a00"
+                    },
+                    "whisper": {
+                        "color": "#66ff66"
                     }
                 },
                 "highlights": [
                     {
                         "css": "numbers",
-                        "regex": "\\([0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\)$"
+                        "regex": "\\([0-9][0-9]\\:[0-9][0-9]\\:[0-9][0-9]\\)$"
                     },
                     {
                         "css": "lnet",
@@ -107,6 +116,22 @@ angular.module('settings', [])
                     {
                         "css": "lich",
                         "regex": "^--- Lich:.*"
+                    },
+                    {
+                        "css": "position",
+                        "regex": "\\((?:calmed|dead|flying|hiding|kneeling|prone|sitting|sleeping|stunned)\\)"
+                    },
+                    {
+                        "css": "magic",
+                        "regex": "(?:You gesture|You intone a phrase of elemental power|You recite a series of mystical phrases|You trace a series of glowing runes|Your hands glow with power as you invoke|You trace a simple rune while intoning|You trace a sign while petitioning the spirits|You trace an intricate sign that contorts in the air).*"
+                    },
+                    {
+                        "css": "magic",
+                        "regex": "(?:Cast Roundtime 3 Seconds\\.|Your spell is ready\\.)"
+                    },
+                    {
+                        "css": "disk",
+                        "regex": "([A-Z][a-z]+ disk)"
                     }
                 ],
                 "macros": {
@@ -115,12 +140,12 @@ angular.module('settings', [])
                 },
                 "presets": {
                     "bold": "bold",
-                    "disconnects": "logoffs",
                     "deaths": "deaths",
+                    "disconnects": "logoffs",
                     "familiar": "familiar",
                     "link": "link",
-                    "logons": "logons",
                     "logoffs": "logoffs",
+                    "logons": "logons",
                     "mono": "mono",
                     "prompt": "prompt",
                     "roomName": "roomName",
@@ -173,7 +198,7 @@ angular.module('settings', [])
 
         return settings;
     })
-    .controller('SettingsCtrl', function($scope, $modal, Client, SettingsService) {
+    .controller('SettingsCtrl', function($scope, $modal, $location, Client, SettingsService) {
         SettingsService.load(function(settings) {
             $scope.settings = JSON.stringify(settings, undefined, 2);
 
@@ -183,13 +208,14 @@ angular.module('settings', [])
                 if (json) {
                     SettingsService.settings = json;
                     SettingsService.save(function() {
-                        Client.Settings = json;
+                        Client.settings = json;
                         $modal.open({
                             templateUrl: 'settings/modal-settings-saved.html',
                             scope: $scope,
                             controller: function($scope, $modalInstance) {
                                 $scope.ok = function() {
                                     $modalInstance.close();
+                                    $location.path('/game');
                                 };
                             }
                         });

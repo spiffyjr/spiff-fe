@@ -5,8 +5,8 @@ angular.module('index', [])
         $scope.hostname = '127.0.0.1';
         $scope.port     = '8000';
 
-        Client.connect('192.168.14.1', 8000);
-        $location.path('/game');
+        //Client.connect('127.0.0.1', 8000);
+        //$location.path('/settings');
 
         $scope.connect = function(hostname, port) {
             Client.connect(hostname, Number(port), function(result) {
@@ -22,6 +22,9 @@ angular.module('index', [])
                     });
                     Client.disconnect();
                 } else {
+                    Client.send('look');
+                    Client.send('stance');
+                    Client.send('glance');
                     $location.path('/game');
                     $scope.$apply();
                 }

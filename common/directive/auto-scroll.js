@@ -19,7 +19,7 @@ angular.module('directive.autoscroll', [])
 
                     if (diff > 0) {
                         var windowHeight = element.prop('scrollTop') + element.prop('clientHeight') + element.prop('clientTop');
-                        if (windowHeight >= element.prop('scrollHeight') - 5) {
+                        if (disableScroll[id] && windowHeight >= element.prop('scrollHeight') - 5) {
                             if (id && scrollBuffer[id] && scrollBuffer[id].length > 0) {
                                 angular.forEach(scrollBuffer[id], function(buffer) {
                                     element.append(angular.element('<div>').html(buffer));
@@ -31,7 +31,7 @@ angular.module('directive.autoscroll', [])
                             disableScroll[id] = false;
                         }
                     // todo: why is this scrolling extra?
-                    } else if (diff < -1) {
+                    } else if (diff < -5) {
                         disableScroll[id] = true;
                     }
 
@@ -57,6 +57,7 @@ angular.module('directive.autoscroll', [])
 
                     if (children.length > 1024) {
                         children[0].remove();
+                        prevScroll = element.prop('scrollTop');
                     }
 
                     element.prop('scrollTop', element.prop('scrollHeight'));

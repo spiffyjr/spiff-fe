@@ -52,6 +52,13 @@ angular.module('command', ['client'])
                 }
             }
 
+            if (event.keyCode == 27) {
+                $scope.command = '';
+                $scope.$apply();
+                document.getElementById("game-main-command").children[0].focus();
+                return;
+            }
+
             var key = String.fromCharCode(event.keyCode).toLowerCase();
 
             if (event.altKey) {

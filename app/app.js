@@ -3,8 +3,7 @@ var app = angular.module('app', [
     'ngRoute',
     'ngSanitize',
 
-    'ui.bootstrap.collapse',
-    'ui.bootstrap.modal',
+    'ui.bootstrap',
     'ui.keypress',
 
     'directive.autoscroll',

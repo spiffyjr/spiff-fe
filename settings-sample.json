@@ -72,12 +72,18 @@
         },
         "position": {
             "color": "#565656"
+        },
+        "magic": {
+            "color": "#909ff"
+        },
+        "disk": {
+            "color": "#88aaff"
         }
     },
     "highlights": [
         {
             "css": "numbers",
-            "regex": "\\([0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\)$"
+            "regex": "\\([0-9][0-9]\\:[0-9][0-9]\\:[0-9][0-9]\\)$"
         },
         {
             "css": "lnet",
@@ -106,6 +112,18 @@
         {
             "css": "position",
             "regex": "\\((?:calmed|dead|flying|hiding|kneeling|prone|sitting|sleeping|stunned)\\)"
+        },
+        {
+            "css": "magic",
+            "regex": "^(?:You gesture|You intone a phrase of elemental power|You recite a series of mystical phrases|You trace a series of glowing runes|Your hands glow with power as you invoke|You trace a simple rune while intoning|You trace a sign while petitioning the spirits|You trace an intricate sign that contorts in the air).*$"
+        },
+        {
+            "css": "magic",
+            "regex": "^(?:Cast Roundtime 3 Seconds\\.|Your spell is ready\\.)$"
+        },
+        {
+            "css": "disk",
+            "regex": "([A-Z][a-z]+ disk)"
         }
     ],
     "macros": {

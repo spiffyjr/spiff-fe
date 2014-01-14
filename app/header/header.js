@@ -5,8 +5,12 @@ angular.module('header', [])
         var appwin   = chrome.app.window.current();
         var header   = angular.element(document.getElementById('header'));
 
+        $scope.collapsed = false;
         $scope.manifest  = chrome.runtime.getManifest();
-        $scope.maximized = appwin.isMaximized();
+
+        $scope.close = function() {
+            appwin.close();
+        };
 
         $scope.restore  = function() {
             appwin.restore();

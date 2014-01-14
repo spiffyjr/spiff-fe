@@ -23,6 +23,10 @@ progress {
     flex-direction: column;
 }
 
+.full-height {
+    height: 100%;
+}
+
 .overflow {
     overflow-x: hidden;
     overflow-y: scroll;
@@ -52,6 +56,7 @@ progress {
 #game-logons {
     flex: 1 0 auto;
     overflow: hidden;
+    height: 100%;
 }
 
 #game-bottom {
@@ -115,8 +120,16 @@ progress {
     background: #212121;
 }
 
-#game-main-counter progress::-webkit-progress-value {
+#game-main-counter progress.hard::-webkit-progress-value {
     background: darkred;
+}
+
+#game-main-counter progress.soft::-webkit-progress-value {
+    background: darkblue;
+}
+
+#game-main-counter progress.stun::-webkit-progress-value {
+    background: yellow;
 }
 
 /* Command input */
@@ -188,6 +201,10 @@ progress {
     -webkit-app-region: no-drag;
 }
 
+#header .navbar-header button {
+    -webkit-app-region: no-drag;
+}
+
 #header-window-controls {
     margin-left: 15px;
 }
@@ -204,4 +221,9 @@ progress {
 
 #header-window-controls img:hover {
     border: 1px solid #5e5e5e;
+}
+
+/* Settings */
+#settings .page-header {
+    margin-top: 0;
 }
