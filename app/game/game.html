@@ -7,14 +7,17 @@
         </div>
         <div id="game-bottom" class="flex">
             <div id="game-left" class="flex-column">
-                <div id="game-logons" class="hidden-xs hidden-sm" ng-model="logons"></div>
+                <div id="game-logons" class="hidden-xs hidden-sm" fe-auto-scroll ng-model="logons"></div>
             </div>
 
             <div id="game-main" class="flex-column">
                 <div id="game-main-output" class="overflow" fe-auto-scroll ng-model="game"></div>
                 <div id="game-main-status" ng-include="'status/status.html'"></div>
                 <div id="game-main-counter" ng-include="'counter/counter.html'"></div>
-                <div id="game-main-command" ng-include="'command/command.html'"></div>
+                <div class="flex">
+                    <div id="game-main-command" ng-include="'command/command.html'"></div>
+                    <div id="game-main-indicator" ng-include="'indicator/indicator.html'"></div>
+                </div>
                 <div id="game-main-hands" ng-include="'game/hands.html'" class="hidden-xs"></div>
             </div>
         </div>

@@ -55,7 +55,7 @@ angular.module('directive.autoscroll', [])
                     // trim extra buffer elements
                     var children = element.children();
 
-                    if (children.length > 1024) {
+                    if (children.length > 512) {
                         children[0].remove();
                         prevScroll = element.prop('scrollTop');
                     }

@@ -33,7 +33,7 @@ progress {
 }
 
 .ng-hide {
-    display: none;
+    display: none!important;
 }
 
 /* Main Angular Window */
@@ -41,6 +41,22 @@ progress {
     height: 100%;
 }
 
+/* Sitting/standing, etc Indicators */
+#game-main-indicator {
+    width: 200px;
+}
+
+#indicators {
+    padding: 3px 0 0 2px;
+}
+
+#indicators img {
+    vertical-align: baseline;
+}
+
+#indicators .off {
+    color: #000;
+}
 
 /* Game Window */
 #game {
@@ -80,7 +96,7 @@ progress {
 #game-main-output {
     flex: 1 0 auto;
     height: 100%;
-    padding: 5px 0 5px 0;
+    padding: 8px;
 }
 
 #game-main-output div {
@@ -109,7 +125,6 @@ progress {
     height: 28px;
 }
 
-/* Roundtime bars */
 #game-main-counter progress {
     background-color: black;
     border: 0;
@@ -133,6 +148,10 @@ progress {
 }
 
 /* Command input */
+#game-main-command {
+    flex: 1;
+}
+
 #game-main-command input {
     background-color: #212121;
 }
