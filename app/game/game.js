@@ -4,11 +4,14 @@ angular.module('game', ['client', 'client.parser'])
     .config(function ($routeProvider) {
         $routeProvider.when('/game', { controller: 'GameCtrl', templateUrl: 'game/game.html' });
     })
-    .controller('GameCtrl', function($scope, Client, Parser) {
-        $scope.thoughts  = '';
-        $scope.logons    = '';
-        $scope.game      = '';
-        $scope.roomobjs  = '';
+    .controller('GameCtrl', function($scope, Client, Parser)
+    {
+        $scope.thoughts   = '';
+        $scope.logons     = '';
+        $scope.game       = '';
+        $scope.room_objs  = '';
+        $scope.room       = '';
+        $scope.room_desc  = '';
 
         $scope.hands = {
             left: 'Empty',
@@ -16,24 +19,24 @@ angular.module('game', ['client', 'client.parser'])
             casting: 'None'
         };
 
-        Parser.onHandUpdated = function(hand, item) {
+        Parser.onHandUpdated = function(hand, item)
+        {
             $scope.hands[hand] = item;
         };
 
-        Parser.onLaunchUrl = function(url) {
+        Parser.onLaunchUrl = function(url)
+        {
             window.open('http://www.play.net/' + url);
         };
 
-        Client.onText = function(text, stream) {
+        Client.onText = function(text, stream)
+        {
             if (!stream) {
                 stream = 'game';
             }
             stream = stream.replace(/\s+/, '_');
             if (stream == 'death') {
                 stream = 'logons'
-            }
-            if (stream == 'room_objs') {
-                stream = 'roomobjs';
             }
             if (undefined === $scope[stream]) {
                 return;

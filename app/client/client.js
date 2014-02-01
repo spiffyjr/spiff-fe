@@ -10,6 +10,8 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 macros: null
             };
 
+            var lastUpdate = +new Date();
+
             var activeStream = null;
 
             var activeStyle = null;
@@ -22,11 +24,13 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
 
             var activeText = '';
 
-            var onGameData = function(str) {
+            var onGameData = function(str)
+            {
                 Parser.parse(str);
             };
 
-            var applyHighlight = function(str, hl) {
+            var applyHighlight = function(str, hl)
+            {
                 if (str.trim().length == 0) {
                     return str;
                 }
@@ -54,14 +58,16 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 return tmp.html();
             }.bind(this);
 
-            var applyHighlights = function(str) {
+            var applyHighlights = function(str)
+            {
                 angular.forEach(this.settings.highlights, function(hl) {
                     str = applyHighlight(str, hl);
                 });
                 return str;
             }.bind(this);
 
-            var sendPrompt = function(text, cmd) {
+            var sendPrompt = function(text, cmd)
+            {
                 if (activeStream) {
                     return;
                 }
@@ -79,11 +85,13 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 this.onText(text + "\n", null);
             }.bind(this);
 
-            this.getSocket = function() {
+            this.getSocket = function()
+            {
                 return socket;
             };
 
-            this.sendText = function() {
+            this.sendText = function()
+            {
                 if (activeText == '') {
                     if (!activeStream) {
                         if (needPrompt) {
@@ -149,15 +157,18 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 }
             };
 
-            this.connect = function(hostname, port, callback) {
+            this.connect = function(hostname, port, callback)
+            {
                 socket.connect(hostname, port, callback);
             };
 
-            this.disconnect = function() {
+            this.disconnect = function()
+            {
                 socket.disconnect();
             };
 
-            this.send = function(str) {
+            this.send = function(str)
+            {
                 if (str.trim().length == 0) {
                     return;
                 }
@@ -166,12 +177,14 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 socket.write(str);
             };
 
-            this.onText = function(text, stream) {
+            this.onText = function(text, stream)
+            {
                 console.log('stream: ' + stream);
                 console.log('text: ' + text);
             };
 
-            Parser.onPrompt = function(timestamp, status) {
+            Parser.onPrompt = function(timestamp, status)
+            {
                 var newPromptText = status + "&gt;";
 
                 if (promptText != newPromptText) {
@@ -182,11 +195,8 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 }
             };
 
-            Parser.onParseComplete = function() {
-                this.sendText();
-            }.bind(this);
-
-            Parser.onStyleStart = function(style) {
+            Parser.onStyleStart = function(style)
+            {
                 if (style == 'mono') {
                     monoEnabled = true;
                     return;
@@ -198,7 +208,21 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 activeStyle = style;
             };
 
-            Parser.onStyleEnd = function() {
+            // todo: This interval + parseComplete is a pretty hacky solution but it works for now.
+            // I should figure out a better way to delay updates and increase performance.
+            Parser.onParseComplete = function()
+            {
+                activeText = activeText + '<div></div>';
+            }.bind(this);
+
+            setInterval(function()
+            {
+                this.sendText();
+            }.bind(this), 10);
+
+
+            Parser.onStyleEnd = function()
+            {
                 if (monoEnabled && this.settings.presets.mono) {
                     activeText = applyHighlight(activeText, {
                         string: activeText,
@@ -210,17 +234,20 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 activeStyle = null;
             }.bind(this);
 
-            Parser.onStreamStart = function(stream) {
+            Parser.onStreamStart = function(stream)
+            {
                 activeStream = stream;
                 //needPrompt   = false;
             }.bind(this);
 
-            Parser.onStreamEnd = function() {
+            Parser.onStreamEnd = function()
+            {
                 this.sendText();
                 activeStream = null;
             }.bind(this);
 
-            Parser.onText = function(text) {
+            Parser.onText = function(text)
+            {
                 // Replace any bad characters
                 text = text.replace('<', '&lt;').replace('>', '&gt;');
 
@@ -241,7 +268,8 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
 
         var client = new Client(Parser, Socket);
 
-        SettingsService.load(function(settings) {
+        SettingsService.load(function(settings)
+        {
             client.settings = settings;
         });
 

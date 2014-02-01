@@ -81,6 +81,9 @@ angular.module('settings', [])
                     "thoughts": {
                         "backgroundColor": "#001a00"
                     },
+                    "uac": {
+                        "color": "#3DB83D"
+                    },
                     "voln": {
                         "backgroundColor": "#001a00"
                     },
@@ -95,15 +98,15 @@ angular.module('settings', [])
                     },
                     {
                         "css": "lnet",
-                        "regex": "^\\[LNet\\]"
+                        "regex": "\\[LNet\\]"
                     },
                     {
                         "css": "prime",
-                        "regex": "^\\[Prime\\]"
+                        "regex": "\\[Prime\\]"
                     },
                     {
                         "css": "code",
-                        "regex": "^\\[Code\\]"
+                        "regex": "\\[Code\\]"
                     },
                     {
                         "css": "paths",
@@ -111,7 +114,7 @@ angular.module('settings', [])
                     },
                     {
                         "css": "private",
-                        "regex": "^\\[Private(?:To)?\\]"
+                        "regex": "\\[Private(?:To)?\\]"
                     },
                     {
                         "css": "lich",
@@ -132,6 +135,14 @@ angular.module('settings', [])
                     {
                         "css": "disk",
                         "regex": "([A-Z][a-z]+ disk)"
+                    },
+                    {
+                        "css": "uac",
+                        "regex": "Strike leaves foe vulnerable to a followup (?:jab|punch|grapple|kick) attack!| Foe remains vulnerable to a followup (?:jab|punch|grapple|kick) attack!"
+                    },
+                    {
+                        "css": "magic",
+                        "regex": "Your .* returns to normal."
                     }
                 ],
                 "macros": {

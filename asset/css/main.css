@@ -19,6 +19,22 @@ progress {
     display: flex;
 }
 
+.rounded {
+    height: 38px;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #888;
+    vertical-align: middle;
+    background-image: none;
+    border: 1px solid #282828;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
 .flex-column {
     flex-direction: column;
 }
@@ -47,7 +63,7 @@ progress {
 }
 
 #indicators {
-    padding: 3px 0 0 2px;
+    margin-left: 5px;
 }
 
 #indicators img {
@@ -81,6 +97,7 @@ progress {
 
 #game-top-thoughts, #game-top-roomobjs {
     height: 100%;
+    line-height: 1.1;
 }
 
 #game-left {
@@ -104,25 +121,23 @@ progress {
 }
 
 #game-main-hands {
-    height: 28px;
+    height: 38px;
     text-indent: 20px;
-    line-height: 28px;
+    line-height: 38px;
     margin-top: 3px;
+    vertical-align: middle;
 }
 
 #game-hands-left {
-    background: url('/asset/img/left_hand.png') no-repeat;
-    height: 28px;
+    background: url('/asset/img/left_hand.png') no-repeat 3px 5px;
 }
 
 #game-hands-right {
-    background: url('/asset/img/right_hand.png') no-repeat;
-    height: 28px;
+    background: url('/asset/img/right_hand.png') no-repeat 3px 5px;
 }
 
 #game-hands-spell {
-    background: url('/asset/img/spell_ready.png') no-repeat;
-    height: 28px;
+    background: url('/asset/img/spell_ready.png') no-repeat 3px 5px;
 }
 
 #game-main-counter progress {
