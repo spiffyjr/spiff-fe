@@ -7,33 +7,106 @@ angular.module('settings', [])
     .factory('SettingsService', function() {
         var Settings = function() {
             var defaultSettings = {
-                "css": {
+                "highlights": [
+                    {
+                        "style": {
+                            "color": "#555555"
+                        },
+                        "regex": "\\([0-9][0-9]\\:[0-9][0-9]\\:[0-9][0-9]\\)$"
+                    },
+                    {
+                        "style": {
+                            "color": "#0099ff"
+                        },
+                        "regex": "\\[LNet\\]"
+                    },
+                    {
+                        "style": {
+                            "color": "#808000"
+                        },
+                        "regex": "\\[Prime\\]"
+                    },
+                    {
+                        "style": {
+                            "color": "#008000"
+                        },
+                        "regex": "\\[Code\\]"
+                    },
+                    {
+                        "style": {
+                            "color": "#0099ff"
+                        },
+                        "regex": "Obvious (?:exits|paths):"
+                    },
+                    {
+                        "style": {
+                            "color": "#ffffff",
+                            "fontWeight": "bold"
+                        },
+                        "regex": "\\[Private(?:To)?\\]"
+                    },
+                    {
+                        "style": {
+                            "color": "#008000"
+                        },
+                        "regex": "^--- Lich:.*"
+                    },
+                    {
+                        "style": {
+                            "color": "#565656"
+                        },
+                        "regex": "\\((?:calmed|dead|flying|hiding|kneeling|prone|sitting|sleeping|stunned)\\)"
+                    },
+                    {
+                        "style": {
+                            "color": "#9090ff"
+                        },
+                        "regex": "(?:You gesture|You intone a phrase of elemental power|You recite a series of mystical phrases|You trace a series of glowing runes|Your hands glow with power as you invoke|You trace a simple rune while intoning|You trace a sign while petitioning the spirits|You trace an intricate sign that contorts in the air).*"
+                    },
+                    {
+                        "style": {
+                            "color": "#9090ff"
+                        },
+                        "regex": "(?:Cast Roundtime 3 Seconds\\.|Your spell is ready\\.)"
+                    },
+                    {
+                        "style": {
+                            "color": "#88aaff"
+                        },
+                        "regex": "([A-Z][a-z]+ disk)"
+                    },
+                    {
+                        "style": {
+                            "color": "#3DB83D"
+                        },
+                        "regex": "Strike leaves foe vulnerable to a followup (?:jab|punch|grapple|kick) attack!| Foe remains vulnerable to a followup (?:jab|punch|grapple|kick) attack!"
+                    },
+                    {
+                        "style": {
+                            "color": "#9090ff"
+                        },
+                        "regex": "Your .* returns to normal."
+                    }
+                ],
+                "macros": {
+                    "ctrl+d": "\\xstance defensive\\r",
+                    "ctrl+o": "\\xstance offensive\\r"
+                },
+                "presets": {
                     "bold": {
                         "color": "yellow",
                         "fontWeight": "bold"
                     },
-                    "casting": {
-                        "color": "#9090ff"
-                    },
-                    "code": {
-                        "color": "#008000"
-                    },
                     "deaths": {
                         "color": "red"
                     },
-                    "disk": {
-                        "color": "#88aaff"
+                    "disconnects": {
+                        "color": "darkred"
                     },
                     "familiar": {
                         "backgroundColor": "#00001a"
                     },
-                    "lich": {
-                        "color": "#008000"
-                    },
                     "link": {
-                        "color": "saddlebrown"
-                    },
-                    "lnet": {
                         "color": "#0099ff"
                     },
                     "logoffs": {
@@ -42,28 +115,9 @@ angular.module('settings', [])
                     "logons": {
                         "color": "darkgreen"
                     },
-                    "magic": {
-                        "color": "#9090ff"
-                    },
                     "mono": {
                         "fontFamily": "\"Lucida Console\", Monaco, monospace",
                         "whiteSpace": "pre-wrap"
-                    },
-                    "numbers": {
-                        "color": "#555555"
-                    },
-                    "paths": {
-                        "color": "#0099ff"
-                    },
-                    "position": {
-                        "color": "#565656"
-                    },
-                    "prime": {
-                        "color": "#808000"
-                    },
-                    "private": {
-                        "color": "#ffffff",
-                        "fontWeight": "bold"
                     },
                     "prompt": {
                         "color": "#555555"
@@ -75,14 +129,8 @@ angular.module('settings', [])
                     "speech": {
                         "color": "#66ff66"
                     },
-                    "status": {
-                        "color": "#565656"
-                    },
                     "thoughts": {
                         "backgroundColor": "#001a00"
-                    },
-                    "uac": {
-                        "color": "#3DB83D"
                     },
                     "voln": {
                         "backgroundColor": "#001a00"
@@ -90,133 +138,97 @@ angular.module('settings', [])
                     "whisper": {
                         "color": "#66ff66"
                     }
-                },
-                "highlights": [
-                    {
-                        "css": "numbers",
-                        "regex": "\\([0-9][0-9]\\:[0-9][0-9]\\:[0-9][0-9]\\)$"
-                    },
-                    {
-                        "css": "lnet",
-                        "regex": "\\[LNet\\]"
-                    },
-                    {
-                        "css": "prime",
-                        "regex": "\\[Prime\\]"
-                    },
-                    {
-                        "css": "code",
-                        "regex": "\\[Code\\]"
-                    },
-                    {
-                        "css": "paths",
-                        "regex": "Obvious (?:exits|paths):"
-                    },
-                    {
-                        "css": "private",
-                        "regex": "\\[Private(?:To)?\\]"
-                    },
-                    {
-                        "css": "lich",
-                        "regex": "^--- Lich:.*"
-                    },
-                    {
-                        "css": "position",
-                        "regex": "\\((?:calmed|dead|flying|hiding|kneeling|prone|sitting|sleeping|stunned)\\)"
-                    },
-                    {
-                        "css": "magic",
-                        "regex": "(?:You gesture|You intone a phrase of elemental power|You recite a series of mystical phrases|You trace a series of glowing runes|Your hands glow with power as you invoke|You trace a simple rune while intoning|You trace a sign while petitioning the spirits|You trace an intricate sign that contorts in the air).*"
-                    },
-                    {
-                        "css": "magic",
-                        "regex": "(?:Cast Roundtime 3 Seconds\\.|Your spell is ready\\.)"
-                    },
-                    {
-                        "css": "disk",
-                        "regex": "([A-Z][a-z]+ disk)"
-                    },
-                    {
-                        "css": "uac",
-                        "regex": "Strike leaves foe vulnerable to a followup (?:jab|punch|grapple|kick) attack!| Foe remains vulnerable to a followup (?:jab|punch|grapple|kick) attack!"
-                    },
-                    {
-                        "css": "magic",
-                        "regex": "Your .* returns to normal."
-                    }
-                ],
-                "macros": {
-                    "ctrl+d": "\\xstance defensive\\r",
-                    "ctrl+o": "\\xstance offensive\\r"
-                },
-                "presets": {
-                    "bold": "bold",
-                    "deaths": "deaths",
-                    "disconnects": "logoffs",
-                    "familiar": "familiar",
-                    "link": "link",
-                    "logoffs": "logoffs",
-                    "logons": "logons",
-                    "mono": "mono",
-                    "prompt": "prompt",
-                    "roomName": "roomName",
-                    "speech": "speech",
-                    "thoughts": "thoughts",
-                    "voln": "voln",
-                    "whisper": "whisper"
                 }
             };
 
-            this.settings = null;
+            this.settings = {
+                highlights: {},
+                presets: {},
+                macros: {}
+            };
 
             this.save = function(callback) {
+                angular.forEach(['highlights', 'macros', 'presets'], function(name)
+                {
+                    if (!this.settings[name]) {
+                        this.settings[name] = {};
+                    }
+                }.bind(this));
                 chrome.storage.sync.set(this.settings, callback);
             };
 
-            this.load = function(callback, forceDefaults) {
-                if (this.settings) {
-                    if (callback) {
-                        callback(this.settings);
-                    }
-                    return;
-                }
-
-                var that = this;
+            this.load = function(callback) {
                 chrome.storage.sync.get(null, function(value) {
-                    if (forceDefaults || Object.keys(value).length == 0) {
-                        that.setDefaults(function() {
-                            that.settings = defaultSettings;
-                            if (callback) {
-                                callback(that.settings);
-                            }
-                        });
+                    if (Object.keys(value).length == 0) {
+                        this.loadDefaults(callback);
                     } else {
-                        that.settings = value;
+                        this.settings = value;
                         if (callback) {
-                            callback(value);
+                            callback();
                         }
                     }
-                });
+                }.bind(this));
             };
 
-            this.setDefaults = function(callback) {
-                chrome.storage.sync.set(defaultSettings, callback);
+            this.loadDefaults = function(callback) {
+                this.settings = defaultSettings;
+                this.save(callback);
             };
         };
 
-        var settings = new Settings();
-        settings.load();
-
-        return settings;
+        return new Settings();
     })
     .controller('SettingsCtrl', function($scope, $modal, $location, Client, SettingsService) {
-        SettingsService.load(function(settings) {
-            $scope.settings = JSON.stringify(settings, undefined, 2);
+        $scope.settings = JSON.stringify(SettingsService.settings, undefined, 2);
 
-            $scope.save = function() {
+        $scope.save = function() {
+            try {
                 var json = JSON.parse($scope.settings);
+            } catch (err) {
+                $modal.open({
+                    templateUrl: 'settings/modal-settings-error.html',
+                    scope: $scope,
+                    controller: function($scope, $modalInstance) {
+                        $scope.ok = function() {
+                            $modalInstance.close();
+                        };
+                    }
+                });
+            }
 
-                if (json) {
+            if (json) {
+                var error = false;
+
+                if (json.highlights) {
+                    angular.forEach(json.highlights, function(hl)
+                    {
+                        if (error) {
+                            return;
+                        }
+
+                        if (hl.regex) {
+                            try {
+                                new RegExp(hl.regex);
+                            } catch (err) {
+                                $modal.open({
+                                    templateUrl: 'settings/modal-settings-regex.html',
+                                    scope: $scope,
+                                    controller: function($scope, $modalInstance) {
+                                        $scope.highlight = hl;
+                                        $scope.error = err.message;
+                                        $scope.ok = function() {
+                                            $modalInstance.close();
+                                        };
+                                    }
+                                });
+
+                                error = true;
+                            }
+                        }
+                    });
+                }
+
+                if (!error) {
                     SettingsService.settings = json;
                     SettingsService.save(function() {
                         Client.settings = json;
@@ -232,22 +244,23 @@ angular.module('settings', [])
                         });
                     });
                 }
-            };
-
-            $scope.defaults = function() {
-                SettingsService.load(function(settings) {
-                    Client.settings = settings;
-
-                    $modal.open({
-                        templateUrl: 'settings/modal-defaults-loaded.html',
-                        scope: $scope,
-                        controller: function($scope, $modalInstance) {
-                            $scope.ok = function() {
-                                $modalInstance.close();
-                            };
-                        }
-                    });
-                }, true);
             }
-        });
+        };
+
+        $scope.defaults = function() {
+            SettingsService.loadDefaults(function()
+            {
+                Client.settings = SettingsService.settings;
+                $modal.open({
+                    templateUrl: 'settings/modal-defaults-loaded.html',
+                    scope: $scope,
+                    controller: function($scope, $modalInstance) {
+                        $scope.ok = function() {
+                            $modalInstance.close();
+                            $location.path('/game');
+                        };
+                    }
+                });
+            });
+        }
     });

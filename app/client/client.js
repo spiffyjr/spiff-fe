@@ -2,15 +2,12 @@
 
 angular.module('client', ['client.parser', 'client.socket', 'settings'])
     .factory('Client', function(Parser, Socket, SettingsService) {
-        var Client = function Client(Parser, socket) {
-            this.settings = {
-                css: null,
-                highlights: null,
-                presets: null,
-                macros: null
-            };
+        var Client = function Client(SettingsService, Parser, socket) {
+            this.settings = {};
 
-            var lastUpdate = +new Date();
+            SettingsService.load(function() {
+                this.settings = SettingsService.settings;
+            }.bind(this));
 
             var activeStream = null;
 
@@ -35,11 +32,6 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                     return str;
                 }
 
-                var css = this.settings.css[hl.css];
-                if (!css) {
-                    return str;
-                }
-
                 var tmp  = angular.element('<span>').html(str);
                 var find = hl.regex ? new RegExp(hl.regex, "g") : hl.string;
 
@@ -48,7 +40,7 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                     replace: function(portion) {
                         var span = angular
                             .element('<span>')
-                            .css(css)
+                            .css(hl.style)
                             .html(portion.text);
 
                         return span[0];
@@ -78,7 +70,7 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 if (this.settings.presets.prompt) {
                     text = applyHighlight(text, {
                         string: text.replace('&gt;', '>'),
-                        css: this.settings.presets.prompt
+                        style: this.settings.presets.prompt
                     });
                 }
 
@@ -111,22 +103,22 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                     if (matches = activeText.match(/(\w+) joins the adventure/)) {
                         activeText = applyHighlight(matches[1], {
                             string: matches[1],
-                            css: this.settings.presets.logons
+                            style: this.settings.presets.logons
                         });
                     } else if (matches = activeText.match(/(\w+) returns home from a hard day of adventuring/)) {
                         activeText = applyHighlight(matches[1], {
                             string: matches[1],
-                            css: this.settings.presets.logoffs
+                            style: this.settings.presets.logoffs
                         });
                     } else if (matches = activeText.match(/(\w+) has disconnected/)) {
                         activeText = applyHighlight(matches[1], {
                             string: matches[1],
-                            css: this.settings.presets.disconnects
+                            style: this.settings.presets.disconnects
                         });
                     } else if (matches = activeText.match(/(\w+) (?:just bit the dust|has been vaporized|was just incinerated|echoes in your mind)/)) {
                         activeText = applyHighlight(matches[1], {
                             string: matches[1],
-                            css: this.settings.presets.deaths
+                            style: this.settings.presets.deaths
                         });
                     }
                 }
@@ -226,7 +218,7 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 if (monoEnabled && this.settings.presets.mono) {
                     activeText = applyHighlight(activeText, {
                         string: activeText,
-                        css: this.settings.presets.mono
+                        style: this.settings.presets.mono
                     });
                 }
 
@@ -256,7 +248,7 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
                 if (activeStyle && this.settings.presets[activeStyle] && text.trim().length > 0) {
                     text = applyHighlight(text, {
                         string: text.trim(),
-                        css: this.settings.presets[activeStyle]
+                        style: this.settings.presets[activeStyle]
                     });
                 }
 
@@ -266,12 +258,5 @@ angular.module('client', ['client.parser', 'client.socket', 'settings'])
             socket.ondata(onGameData);
         };
 
-        var client = new Client(Parser, Socket);
-
-        SettingsService.load(function(settings)
-        {
-            client.settings = settings;
-        });
-
-        return client;
+        return new Client(SettingsService, Parser, Socket);
     });
