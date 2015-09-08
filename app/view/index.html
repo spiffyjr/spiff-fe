@@ -1,0 +1,41 @@
+<div ng-controller="IndexCtrl">
+    <h2>
+        Connecting to Lich
+    </h2>
+    <p>
+        In order to connect this application requires Lich to be running in detachable client mode. This allows
+        Lich to run in the background and Spif FE can connect to it directly.<br><br>
+
+        <ol>
+            <li>Open cmd.exe by presssing WIN+R, typing cmd.exe, and hitting enter.</li>
+            <li>Change to the Lich directory by entering, <strong>cd c:\&lt;your lich directory&gt;</strong></li>
+            <li>Run <strong>ruby lich.rbw --login character --without-frontend --detachable-client=8000</strong></li>
+            <li>
+                Modify the hostname/port below and press connect.
+                <ul>
+                    <li>If you copied the command in step 3 the defaults are correct.</li>
+                </ul>
+            </li>
+        </ol>
+    </p>
+
+    <form class="form-horizontal" role="form" ng-submit="connect(hostname, port);">
+        <div class="form-group">
+            <label for="hostname" class="col-xs-2 control-label">Hostname</label>
+            <div class="col-xs-4">
+                <input type="hostname" class="form-control" id="hostname" ng-model="hostname" placeholder="Hostname">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="port" class="col-xs-2 control-label">Port</label>
+            <div class="col-xs-2">
+                <input type="text" class="form-control" id="port" ng-model="port" placeholder="Port">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+                <button type="submit" class="btn btn-default">Connect</button>
+            </div>
+        </div>
+    </form>
+</div>

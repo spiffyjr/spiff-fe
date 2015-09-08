@@ -2,40 +2,50 @@
 <html lang="en" ng-app="app" ng-csp>
 <head>
     <meta charset="utf-8">
-
-    <link rel="stylesheet" media="all" href="../vendor/css/bootstrap.min.css">
-    <link rel="stylesheet" media="all" href="../vendor/css/font-awesome.min.css">
-    <link rel="stylesheet" media="all" href="../asset/css/main.css">
-    <link rel="stylesheet" media="all" href="../asset/css/theme.css">
+    <!-- prod:app.css -->
+<link rel="stylesheet" href="/build/css/app.css/app.css" />
+<!-- endbuild -->
 </head>
 
 <body>
+<div layout="column" flex style="height:100%;">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Settings">
+                <md-icon md-font-icon="fa fa-bars fa-2x"></md-icon>
+            </md-button>
+            <h2>Spif FE</h2>
+        </div>
+    </md-toolbar>
+    <ng-view layout="column" flex style="height: 100%;"></ng-view>
+</div>
 
-<div id="ng-view" ng-view></div>
-
-<script src="../vendor/js/angular.min.js"></script>
-<script src="../vendor/js/angular-route.min.js"></script>
-<script src="../vendor/js/angular-sanitize.min.js"></script>
-<script src="../vendor/js/angular-ui-keypress.js"></script>
-<script src="../vendor/js/angular-ui-bootstrap.min.js"></script>
-<script src="../vendor/js/replace.js"></script>
-
-<script src="../common/directive/auto-scroll.js"></script>
-<script src="../common/directive/progress.js"></script>
-
-<script src="client/socket.js"></script>
-<script src="client/client.js"></script>
-<script src="client/parser.js"></script>
-<script src="command/command.js"></script>
-<script src="counter/counter.js"></script>
-<script src="game/game.js"></script>
-<script src="header/header.js"></script>
-<script src="index/index.js"></script>
-<script src="indicator/indicator.js"></script>
-<script src="settings/settings.js"></script>
-<script src="status/status.js"></script>
-
-<script src="app.js"></script>
+<!-- prod:vendor.js -->
+<script src="/build/js/vendor.js/angular.js"></script>
+<script src="/build/js/vendor.js/angular-aria.js"></script>
+<script src="/build/js/vendor.js/angular-animate.js"></script>
+<script src="/build/js/vendor.js/angular-route.js"></script>
+<script src="/build/js/vendor.js/angular-sanitize.js"></script>
+<script src="/build/js/vendor.js/angular-ui.js"></script>
+<script src="/build/js/vendor.js/angular-material.js"></script>
+<script src="/build/js/vendor.js/replace.js"></script>
+<!-- endbuild -->
+<!-- prod:app.js -->
+<script src="/build/js/app.js/app.js"></script>
+<script src="/build/js/app.js/auto-scroll.js"></script>
+<script src="/build/js/app.js/progress.js"></script>
+<script src="/build/js/app.js/socket.js"></script>
+<script src="/build/js/app.js/client.js"></script>
+<script src="/build/js/app.js/parser.js"></script>
+<script src="/build/js/app.js/command.js"></script>
+<script src="/build/js/app.js/counter.js"></script>
+<script src="/build/js/app.js/game.js"></script>
+<script src="/build/js/app.js/header.js"></script>
+<script src="/build/js/app.js/index.js"></script>
+<script src="/build/js/app.js/indicator.js"></script>
+<script src="/build/js/app.js/settings.js"></script>
+<script src="/build/js/app.js/status.js"></script>
+<!-- endbuild -->
 
 </body>
 </html>

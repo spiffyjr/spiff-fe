@@ -1,0 +1,66 @@
+requires:
+    sass: gulp-sass
+    concat: gulp-concat
+mimetypes:
+    # This section contains the formatters for the css files
+    css:
+        # In 'prod' mode, use these settings
+        prod:
+            outputFolder: build/css  # The output folder for your saving your compiled files
+            webPath:      /build/css     # The web path for the compiled files
+            # Run these tasks on your compiled files
+            tasks:
+                - { name: sass }
+
+        # This is the list of source files to apply the above settings
+        files:
+            app.css: # This is the output filename
+                - asset/sass/app.scss
+
+        # Watch these files for changes (optional)
+        watch:
+            - asset/**/*.scss
+            - asset/**/*.css
+
+    # This section contains the formatters for your JS files
+    js:
+        prod:
+            outputFolder: build/js  # Save the files here
+            webPath:      /build/js # Specify the web path
+            tasks: []
+
+        # Here is a list of files to apply the above tasks to
+        files:
+            vendor.js:
+                - bower_components/angular/angular.js
+                - bower_components/angular-aria/angular-aria.js
+                - bower_components/angular-animate/angular-animate.js
+                - bower_components/angular-route/angular-route.js
+                - bower_components/angular-sanitize/angular-sanitize.js
+                - bower_components/angular-ui/build/angular-ui.js
+                - bower_components/angular-material/angular-material.js
+                - asset/js/replace.js
+            app.js: # This is the output filename
+                - app/app.js
+                - app/directive/auto-scroll.js
+                - app/directive/progress.js
+                - app/service/socket.js
+                - app/service/client.js
+                - app/service/parser.js
+                - app/controller/command.js
+                - app/controller/counter.js
+                - app/controller/game.js
+                - app/controller/header.js
+                - app/controller/index.js
+                - app/controller/indicator.js
+                - app/controller/settings.js
+                - app/controller/status.js
+
+# This is the list of files/paths to search and find the replacement tags to insert the
+# generated <script> or stylesheet tags
+replacementPaths:
+    - app/app.html
+
+default:
+    - js
+    - css

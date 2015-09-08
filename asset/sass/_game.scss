@@ -1,0 +1,136 @@
+[fe-auto-scroll] {
+  overflow-y: scroll;
+}
+
+#logons-window {
+  overflow-y: hidden;
+}
+
+#game-window {
+  white-space: pre-wrap;
+}
+
+#entry {
+  background-color: #333;
+  color: #fff;
+  position: relative;
+  width: 100%;
+
+  div {
+    background-color: transparent;
+    line-height: 30px;
+  }
+
+  input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #fff;
+    background: transparent;
+    border: 0;
+    padding: 2px;
+    margin: 0;
+    height: 30px;
+    width: 100%;
+    font-size: 16px;
+  }
+
+  progress {
+    -webkit-appearance: none;
+    border: none;
+    height: 34px;
+    width: 100%;
+
+    &::-webkit-progress-bar {
+      background: #333;
+      box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.2);
+    }
+
+    &.hard {
+      &::-webkit-progress-value {
+        background: darkred;
+      }
+    }
+
+    &.soft {
+      &::-webkit-progress-value {
+        background: darkblue;
+      }
+    }
+
+    &.stun {
+      &::-webkit-progress-value {
+        background: yellow;
+      }
+    }
+  }
+}
+
+#status {
+  background-color: rgb(66,66,66);
+  justify-content: center;
+  text-align: right;
+
+  div {
+    color: #fff;
+    position: relative;
+
+    progress {
+      -webkit-appearance: none;
+      border: none;
+      height: 22px;
+      margin-bottom: 4px;
+      width: 100%;
+    }
+
+    > output {
+      display: block;
+      font-size: 16px;
+      position: absolute;
+      top: 2px;
+      z-index: 1000;
+    }
+
+    > output:nth-child(2) {
+      left: 2px;
+    }
+
+    > output:nth-child(3) {
+      right: 2px;
+    }
+
+    &.health {
+      progress::-webkit-progress-value {
+        background: darkred;
+      }
+    }
+
+    &.mana {
+      progress::-webkit-progress-value {
+        background: darkblue;
+      }
+    }
+
+    &.stamina {
+      color: #000;
+
+      progress::-webkit-progress-value {
+        background: yellow;
+      }
+    }
+
+    &.mindState {
+      progress::-webkit-progress-value {
+        background: purple;
+      }
+    }
+
+    &.pbarStance {
+      color: #000;
+
+      progress::-webkit-progress-value {
+        background: lightgrey;
+      }
+    }
+  }
+}

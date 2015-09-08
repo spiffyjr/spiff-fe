@@ -1,0 +1,68 @@
+<div layout="row" flex="25">
+    <md-content id="thought-window" flex="66" fe-auto-scroll ng-model="thoughts" class="md-padding"></md-content>
+    <md-content id="room-window" flex class="md-padding" ng-bind-html="room"></md-content>
+</div>
+<div layout="row" flex>
+    <div layout="column" flex="10">
+        <md-content id="logons-window" flex class="md-padding" fe-auto-scroll ng-model="logons"></md-content>
+        <div id="status" ng-controller="StatusCtrl">
+            <div class="health">
+                <progress value="{{ status.health.current }}" max="{{ status.health.max }}"></progress>
+                <output>health:</output> <output>{{ status.health.current }}</output>
+            </div>
+            <div class="mana">
+                <progress value="{{ status.mana.current }}" max="{{ status.mana.max }}"></progress>
+                <output>mana:</output> <output>{{ status.mana.current }}</output>
+            </div>
+            <div class="stamina">
+                <progress value="{{ status.stamina.current }}" max="{{ status.stamina.max }}"></progress>
+                <output>stamina:</output> <output>{{ status.stamina.current }}</output>
+            </div>
+            <div class="pbarStance">
+                <progress value="{{ status.pbarStance.current }}" max="{{ status.pbarStance.max }}"></progress>
+                <output>stance:</output> <output>{{ status.pbarStance.current }}%</output>
+            </div>
+            <div class="mindState">
+                <progress value="{{ status.mindState.current }}" max="{{ status.mindState.max }}"></progress>
+                <output>mind:</output> <output>{{ status.mindState.current }}%</output>
+            </div>
+            <div class="encumlevel">
+                <progress value="{{ status.encumlevel.current }}" max="{{ status.encumlevel.max }}"></progress>
+                <output>encumbrance:</output> <output>{{ status.encumlevel.current }}%</output>
+            </div>
+            <div class="spirit">
+                <progress value="{{ status.spirit.current }}" max="{{ status.spirit.max }}"></progress>
+                <output>spirit:</output> <output>{{ status.spirit.current }}</output>
+            </div>
+        </div>
+    </div>
+    <md-content id="game-window" flex fe-auto-scroll ng-model="game" class="md-padding"></md-content>
+</div>
+<div layout="column">
+    <!--<div ng-controller="IndicatorCtrl" id="indicators" layout="row">
+        <output ng-class="{ standing: standing, kneeling: kneeling, sitting: sitting, prone: prone }" class="fa fa-lg">
+            <outputmg id="position-img" src="/asset/outputmg/1x1-pixel.png">
+        </output>
+        <output ng-class="{ stealthed: hidden, invisible: invisible }" class="fa fa-lg">
+            <outputmg id="visibility-img" src="/asset/outputmg/1x1-pixel.png">
+        </output>
+        <output ng-class="{off: !bleeding}" class="bleeding fa fa-tint fa-2x">&nbsp;&nbsp;</output>
+        <output ng-class="{off: !diseased}" class="diseased fa fa-tint fa-2x">&nbsp;&nbsp;</output>
+        <output ng-class="{off: !poisoned}" class="poisoned fa fa-tint fa-2x">&nbsp;&nbsp;</output>
+    </div>-->
+
+    <div id="entry" layout="row">
+        <progress ng-controller="CounterCtrl" class="{{ type }}" value="{{ roundtime }}" max="{{ max }}"></progress>
+        <input flex ng-model="command" type="text" autofocus="autofocus" placeholder="command..." ng-controller="CommandCtrl"
+               ui-keydown="{
+              'down':'down($event)',
+              'up':'up($event)',
+              'alt-enter':'enter($event)',
+              'ctrl-enter':'enter($event)',
+              'enter':'enter($event)'
+            }">
+        <div flex="10">{{ hands.left }}</div>
+        <div flex="10">{{ hands.right }}</div>
+        <div flex="10">{{ hands.casting }}</div>
+    </div>
+</div>

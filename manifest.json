@@ -3,7 +3,7 @@
     "short_name": "Spif FE",
     "description": "Spif FE is a Frontend for Gemstone IV.",
     "author": "Kyle Spraggs (theman@spiffyjr.me)",
-    "version": "0.6.6",
+    "version": "0.7.0",
     "manifest_version": 2,
     "minimum_chrome_version": "29",
     "icons": {
