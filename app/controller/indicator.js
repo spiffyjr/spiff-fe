@@ -6,28 +6,28 @@ app.controller('IndicatorCtrl', function($scope, Client, Parser) {
         var xhr = new XMLHttpRequest();
         xhr.responseType = 'blob';
         xhr.onload = function() {
-            callback(window.webkitURL.createObjectURL(xhr.response), uri);
+            callback(window.URL.createObjectURL(xhr.response), uri);
         };
         xhr.open('GET', uri, true);
         xhr.send();
     };
 
     Parser.onIndicator = function(type, value) {
-        if (!value) {
-            return;
-        }
-
-        if (type == 'hidden') {
-            type = 'stealthed';
-        }
+        console.log(type + ': ' + value);
 
         var selector = 'position-img';
-        if (type == 'stealthed' || type == 'invisible') {
+        if (type == 'hidden' || type == 'invisible') {
             selector = 'visibility-img';
         }
 
-        loadImage('/asset/img/' + type + '.png', function(blobUri) {
-            document.getElementById(selector).src = blobUri;
-        })
+        if (value) {
+            loadImage('/asset/img/' + type + '.png', function (blobUri) {
+                document.getElementById(selector).src = blobUri;
+            })
+        } else if (selector == 'visibility-img') {
+            loadImage('/asset/img/1x1-pixel.png', function (blobUri) {
+                document.getElementById(selector).src = blobUri;
+            });
+        }
     };
 });

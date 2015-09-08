@@ -66,8 +66,30 @@
   }
 }
 
+#indicators {
+  background-color: #222;
+  justify-content: center;
+  text-align: center;
+
+  i.off {
+    opacity: 0.15;
+  }
+
+  i.bleeding {
+    color: red;
+  }
+
+  i.poisoned {
+    color: green;
+  }
+
+  i.diseased {
+    color: purple;
+  }
+}
+
 #status {
-  background-color: rgb(66,66,66);
+  background-color: #222;
   justify-content: center;
   text-align: right;
 

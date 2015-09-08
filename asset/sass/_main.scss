@@ -4,6 +4,18 @@ html, body {
   -webkit-user-select: auto;
 }
 
+a {
+  color: #0099ff;
+}
+
+md-toolbar {
+  -webkit-app-region: drag;
+}
+
+ng-view {
+  height: 100%;
+}
+
 :focus {
   outline: none;
 }

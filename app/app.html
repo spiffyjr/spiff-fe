@@ -9,15 +9,33 @@
 
 <body>
 <div layout="column" flex style="height:100%;">
-    <md-toolbar>
+    <md-toolbar ng-controller="ToolbarCtrl">
         <div class="md-toolbar-tools">
-            <md-button class="md-icon-button" aria-label="Settings">
-                <md-icon md-font-icon="fa fa-bars fa-2x"></md-icon>
+            <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleSidenav('left')">
+                <md-icon md-svg-icon="/asset/img/menu.svg"></md-icon>
             </md-button>
-            <h2>Spif FE</h2>
+            <h2>Spif FE v{{ manifest.version }}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" aria-label="Close" ng-click="close()">
+                <md-icon md-svg-icon="/asset/img/close.svg"></md-icon>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="Minimize" ng-click="minimize()">
+                <md-icon md-svg-icon="/asset/img/minimize.svg"></md-icon>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="Maximize" ng-click="maximize()" ng-if="!maximized">
+                <md-icon md-svg-src="/asset/img/maximize.svg"></md-icon>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="Maximize" ng-click="restore()" ng-if="maximized">
+                <md-icon md-svg-src="/asset/img/maximize.svg"></md-icon>
+            </md-button>
         </div>
     </md-toolbar>
-    <ng-view layout="column" flex style="height: 100%;"></ng-view>
+    <div id="main-container" layout="row" flex style="height: 100%;">
+        <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+
+        </md-sidenav>
+        <ng-view layout="column" flex></ng-view>
+    </div>
 </div>
 
 <!-- prod:vendor.js -->
@@ -45,6 +63,7 @@
 <script src="/build/js/app.js/indicator.js"></script>
 <script src="/build/js/app.js/settings.js"></script>
 <script src="/build/js/app.js/status.js"></script>
+<script src="/build/js/app.js/toolbar.js"></script>
 <!-- endbuild -->
 
 </body>

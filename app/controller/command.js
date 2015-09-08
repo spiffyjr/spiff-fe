@@ -55,7 +55,7 @@ app.controller('CommandCtrl', function($scope, $location, Client) {
         if (event.keyCode == 27) {
             $scope.command = '';
             $scope.$apply();
-            document.getElementById("game-main-command").children[0].focus();
+            document.getElementById("command-input").focus();
             return;
         }
 

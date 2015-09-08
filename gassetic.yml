@@ -55,6 +55,7 @@ mimetypes:
                 - app/controller/indicator.js
                 - app/controller/settings.js
                 - app/controller/status.js
+                - app/controller/toolbar.js
 
 # This is the list of files/paths to search and find the replacement tags to insert the
 # generated <script> or stylesheet tags
