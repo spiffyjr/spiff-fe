@@ -8066,6 +8066,8 @@ a {
 
 md-toolbar {
   -webkit-app-region: drag; }
+  md-toolbar button {
+    -webkit-app-region: no-drag; }
 
 ng-view {
   height: 100%; }

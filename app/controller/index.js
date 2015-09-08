@@ -5,9 +5,6 @@ app.controller('IndexCtrl', function($scope, $location, Client) {
     $scope.hostname = '127.0.0.1';
     $scope.port     = '8000';
 
-    Client.connect('127.0.0.1', 8000);
-    $location.path('/game');
-
     $scope.connect = function(hostname, port) {
         Client.connect(hostname, Number(port), function(result) {
             if (result < 0) {

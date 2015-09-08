@@ -13,8 +13,6 @@ app.controller('IndicatorCtrl', function($scope, Client, Parser) {
     };
 
     Parser.onIndicator = function(type, value) {
-        console.log(type + ': ' + value);
-
         var selector = 'position-img';
         if (type == 'hidden' || type == 'invisible') {
             selector = 'visibility-img';

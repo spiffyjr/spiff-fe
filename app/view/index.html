@@ -1,4 +1,4 @@
-<div ng-controller="IndexCtrl">
+<md-content ng-controller="IndexCtrl" flex class="md-padding">
     <h2>
         Connecting to Lich
     </h2>
@@ -19,23 +19,15 @@
         </ol>
     </p>
 
-    <form class="form-horizontal" role="form" ng-submit="connect(hostname, port);">
-        <div class="form-group">
+    <form role="form" ng-submit="connect(hostname, port);">
+        <md-input-container>
             <label for="hostname" class="col-xs-2 control-label">Hostname</label>
-            <div class="col-xs-4">
-                <input type="hostname" class="form-control" id="hostname" ng-model="hostname" placeholder="Hostname">
-            </div>
-        </div>
-        <div class="form-group">
+            <input type="hostname" class="form-control" id="hostname" ng-model="hostname">
+        </md-input-container>
+        <md-input-container>
             <label for="port" class="col-xs-2 control-label">Port</label>
-            <div class="col-xs-2">
-                <input type="text" class="form-control" id="port" ng-model="port" placeholder="Port">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-xs-offset-2 col-xs-10">
-                <button type="submit" class="btn btn-default">Connect</button>
-            </div>
-        </div>
+            <input type="text" class="form-control" id="port" ng-model="port">
+        </md-input-container>
+        <md-button type="submit" class="btn btn-default">Connect</md-button>
     </form>
-</div>
+</md-content>

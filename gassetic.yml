@@ -44,6 +44,7 @@ mimetypes:
                 - app/app.js
                 - app/directive/auto-scroll.js
                 - app/directive/progress.js
+                - app/directive/resize.js
                 - app/service/socket.js
                 - app/service/client.js
                 - app/service/parser.js
