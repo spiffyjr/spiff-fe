@@ -8,6 +8,10 @@ a {
   color: #0099ff;
 }
 
+md-sidenav {
+  z-index: 10000;
+}
+
 md-toolbar {
   -webkit-app-region: drag;
 

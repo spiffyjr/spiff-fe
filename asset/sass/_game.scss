@@ -4,6 +4,8 @@
 
 #logons-window {
   overflow-y: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #game-window {
@@ -110,7 +112,7 @@
       font-size: 16px;
       position: absolute;
       top: 2px;
-      z-index: 1000;
+      z-index: 5;
     }
 
     > output:nth-child(2) {

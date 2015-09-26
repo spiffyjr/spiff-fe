@@ -8064,6 +8064,9 @@ html, body {
 a {
   color: #0099ff; }
 
+md-sidenav {
+  z-index: 10000; }
+
 md-toolbar {
   -webkit-app-region: drag; }
   md-toolbar button {
@@ -8163,7 +8166,7 @@ ng-view {
       font-size: 16px;
       position: absolute;
       top: 2px;
-      z-index: 1000; }
+      z-index: 5; }
     #status div > output:nth-child(2) {
       left: 2px; }
     #status div > output:nth-child(3) {
